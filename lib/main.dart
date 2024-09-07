@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/page/Home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final tabs = [
-    Center(child: Text('Home', style: TextStyle(fontSize: 24))),
+    Home(),
     Center(child: Text('Search', style: TextStyle(fontSize: 24))),
     Center(child: Text('Profile', style: TextStyle(fontSize: 24))),
     Center(child: Text('Settings', style: TextStyle(fontSize: 24))),
@@ -53,6 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: tabs[_currentIndex], // Use the tabs list to display the selected content
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
+        backgroundColor: Colors.blue, // Set background color here
+
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
