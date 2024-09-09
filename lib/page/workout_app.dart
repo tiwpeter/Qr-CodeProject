@@ -21,6 +21,7 @@ class WorkoutApp extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Color(0xFFC7253E),
                   ),
+                  // red frame
                   child: Column(
                     children: [
                       Container(
@@ -29,6 +30,8 @@ class WorkoutApp extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
+                              child: Center(
+                          //Center with Text
                               child: Text(
                                 'Shop',
                                 style: GoogleFonts.inter(
@@ -36,6 +39,8 @@ class WorkoutApp extends StatelessWidget {
                                   fontSize: 20,
                                   color: Color(0xFFFFF5E4),
                                 ),
+                              ),
+
                               ),
                             ),
                             Expanded(
@@ -93,47 +98,7 @@ class WorkoutApp extends StatelessWidget {
                   ),
                 ),
                 //Colum Stock
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFEAECF5)),
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFFF8F9FC),
-                  ),
-                  padding: EdgeInsets.fromLTRB(15, 23, 35.5, 23),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Bankok',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/delete_1.png',
-                        width: 16,
-                        height: 16,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        '0',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/add_11.png',
-                        width: 16,
-                        height: 16,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                ),
+                
                 
               ],
             ),
