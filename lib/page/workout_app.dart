@@ -92,6 +92,7 @@ class WorkoutApp extends StatelessWidget {
                     ],
                   ),
                 ),
+                //Colum Stock
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Color(0xFFEAECF5)),
@@ -133,47 +134,7 @@ class WorkoutApp extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xFFEAECF5)),
-                    borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFFF8F9FC),
-                  ),
-                  padding: EdgeInsets.fromLTRB(15, 23, 0, 23),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Bankok',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/delete_1.png',
-                        width: 16,
-                        height: 16,
-                        fit: BoxFit.cover,
-                      ),
-                      Text(
-                        '0',
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                          color: Color(0xFF000000),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/add_11.png',
-                        width: 16,
-                        height: 16,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                ),
+                
               ],
             ),
           ),
