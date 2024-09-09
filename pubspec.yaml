@@ -25,7 +25,6 @@ flutter:
     - assets/images/icon.png
     - assets/images/input_1.png
     - assets/images/menu_11.png
-    - assets/images/home_05.png
     - assets/images/input_11.png
     - assets/images/configuration_1.png
     - assets/images/stock_1.png
@@ -35,11 +34,12 @@ flutter:
     - assets/images/loupe_1.png
     - assets/images/up_selling_1.png
     - assets/images/add_1.png
-    - assets/images/frame_34665301.jpeg
-    - assets/images/doctor_png_images_1.png
-    - assets/images/frame_3466530.jpeg
     - assets/images/play_21.png
     - assets/images/up_arrow_1.png
     - assets/images/play_31.png
     - assets/images/camera_1.png
     - assets/images/gallery_11.png
+    - assets/images/qrcode.png
+    - assets/images/revenue.png
+
+    

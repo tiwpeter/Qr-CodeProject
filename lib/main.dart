@@ -3,8 +3,6 @@ import 'package:poject_qr/page/Home.dart';
 import 'package:poject_qr/page/moody_mental_health_app.dart';
 import 'package:poject_qr/page/news_1.dart';
 import 'package:poject_qr/page/workout_app.dart';
-import 'package:poject_qr/page/workout_app_1.dart';
-import 'package:poject_qr/page/workout_app_2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +19,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.blue, // Set background color here
-          selectedItemColor: Colors.red, // Set selected item color here
-          unselectedItemColor: Colors.grey, // Optional: Set unselected item color
+          backgroundColor: Colors.blue,
+          selectedItemColor: Colors.red,
+          unselectedItemColor: Colors.grey,
         ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -44,9 +42,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final tabs = [
     Home(),
+    WorkoutApp(),
     News1(),
     MoodyMentalHealthApp(),
-    WorkoutApp(),
+    
   ];
 
   @override
@@ -56,26 +55,25 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: tabs[_currentIndex], // Use the tabs list to display the selected content
+      body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        backgroundColor: Colors.blue, // Set background color here
-
-        items: const <BottomNavigationBarItem>[
+        backgroundColor: Colors.blue,
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Image.asset('assets/images/qrcode.png', width: 24, height: 24),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Image.asset('assets/images/stock_1.png', width: 24, height: 24),
+            label: 'Stock',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+            icon: Image.asset('assets/images/revenue.png', width: 24, height: 24),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
+            icon: Image.asset('assets/images/icon.png', width: 24, height: 24),
             label: 'Settings',
           ),
         ],
