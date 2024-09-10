@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:poject_qr/pages/Homemain.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+import 'package:poject_qr/pages/Homemain.dart';
+import 'package:poject_qr/pages/Homepage.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
 void main() => runApp(MyApp());
 
@@ -28,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final List<Widget> tabs = [
-    Homemain(), // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+    Homepage(), // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
     // เพิ่มหน้าที่เหลือที่ต้องการให้แสดง
     // ตัวอย่าง:
     // StockPage(),
