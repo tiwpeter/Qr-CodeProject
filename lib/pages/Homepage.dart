@@ -1,95 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/widgets/HomeAppBar.dart';
 
 class Homepage extends StatelessWidget {
-  // Method to create a search button
-  Widget showSearchButton(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        // Show a dialog when the button is pressed
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Search'),
-              content: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Enter your search query',
-                ),
-                onChanged: (value) {
-                  // Handle text input here if needed
-                },
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                ),
-                TextButton(
-                  child: Text('Search'),
-                  onPressed: () {
-                    // Handle the search action here
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-      icon: Icon(Icons.search), // Search icon
-      label: Text('Search'),    // Button label
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue, // Background color of the button
-        foregroundColor: Colors.white, // Text color
-        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // Styling the text
-      ),
-    );
-  }
-
-  // Method to show the app name
-  Widget showAppName() {
-    return Text(
-      'Ubg shop',
-      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), // Optional: Styling the text
-    );
-  }
-
- // Method to show category with an image
-  Widget showCategory() {
-    return Row(
-      mainAxisSize: MainAxisSize.min, // Makes Row as small as its children
-      children: <Widget>[
-        Text(
-          'All',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), // Optional: Styling the text
-        ),
-        SizedBox(width: 48), // Adds spacing between the text and the image (adjust value as needed)
-        Image.asset('assets/images/menu_11.png', width: 24, height: 24), // Custom image
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Align(
-          alignment: Alignment.topCenter, // Aligns the Row to the top center of the screen
-          child: Container(
-            padding: EdgeInsets.all(16.0), // Optional: Adds padding around the Row
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Center aligns items horizontally
-              children: <Widget>[
-                Expanded(child: showAppName()), // Allows the text to take up available space
-                SizedBox(width: 10), // Adds spacing between items
-                showSearchButton(context), // Pass the context to the method
-                SizedBox(width: 10), // Adds spacing between items
-                Expanded(child: showCategory()), // Another instance of showAppName
-              ],
+        child: Column(
+          children: [
+            HomeAppBar(),
+            // Use Expanded to make the container take up remaining space
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(top: 15),
+                decoration: BoxDecoration(
+                  color: Color(0xFFEDECF2),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(35),
+                    topRight: Radius.circular(35),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            height: 50,
+                            width: 300,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: 'Enter text',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
