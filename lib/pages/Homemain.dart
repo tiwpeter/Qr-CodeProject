@@ -5,9 +5,12 @@ class Homemain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Column(
         children: [
-          Homepage(),
+          // Assuming Homepage is a widget that fits well in your layout
+          Expanded(
+            child: Homepage(),
+          ),
           Container(
             height: 500,
             padding: EdgeInsets.only(top: 15),
@@ -30,10 +33,7 @@ class Homemain extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 5),
-                        height: 50,
-                        width: 300,
+                      Expanded(
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: 'Enter text',
