@@ -1,104 +1,77 @@
+//เน้นที่การบันทึกการขายใหม่และการเลือกสินค้าจากรายการที่มีอยู่
+//อัปเดตข้อมูลสินค้าและบันทึกการขายในฐานข้อมูล
 import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
+import '../models/sale.dart';
 import '../models/todo.dart';
-import '../pages/SalesScreen.dart'; // นำเข้า SalesScreen
-import 'dart:io'; // เพิ่มการนำเข้า dart:io เพื่อจัดการกับไฟล์
 
-class ToDoListScreen extends StatefulWidget {
+class SalesScreenBarcode extends StatefulWidget {
   @override
-  _ToDoListScreenState createState() => _ToDoListScreenState();
+  _SalesScreenBarcodeState createState() => _SalesScreenBarcodeState();
 }
 
-class _ToDoListScreenState extends State<ToDoListScreen> {
+class _SalesScreenBarcodeState extends State<SalesScreenBarcode> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  List<ToDo> _todos = [];
+  List<Sale> _sales = [];
+  double _totalSales = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _loadTodos();
+    _loadSales();
   }
 
-  void _loadTodos() async {
-    final todos = await _dbHelper.todos();
+  void _loadSales() async {
+    final sales = await _dbHelper.sales();
+    final totalSales = await _dbHelper.getTotalSales();
     setState(() {
-      _todos = todos;
+      _sales = sales;
+      _totalSales = totalSales;
     });
-  }
-
-  void _navigateToSalesScreen() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SalesScreen(), // นำทางไปยัง SalesScreen
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('รายการสินค้า'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              // การนำทางไปยังหน้า BarcodeScannerScreen หรือฟังก์ชันอื่น
-            },
+        title: const Text('บันทึกการขายตามบาร์โค้ด'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('ยอดขายรวม: ${_totalSales.toStringAsFixed(2)} บาท'),
           ),
-          IconButton(
-            icon: const Icon(Icons.sell),
-            onPressed: _navigateToSalesScreen, // เรียกใช้งานฟังก์ชันการนำทาง
+          Expanded(
+            child: ListView.builder(
+              itemCount: _sales.length,
+              itemBuilder: (context, index) {
+                final sale = _sales[index];
+                return FutureBuilder<ToDo?>(
+                  future: _dbHelper.getTodoByBarcode(sale.todoId.toString()), // Assuming todoId is a valid barcode
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData) {
+                      final todo = snapshot.data;
+                      if (todo != null) {
+                        return ListTile(
+                          title: Text(todo.name ?? 'ไม่มีชื่อ'),
+                          subtitle: Text('จำนวน: ${sale.quantity} ราคา: ${sale.total} บาท'),
+                        );
+                      } else {
+                        return ListTile(title: Text('ไม่พบข้อมูล'));
+                      }
+                    } else {
+                      return ListTile(title: Text('ไม่พบข้อมูล'));
+                    }
+                  },
+                );
+              },
+            ),
           ),
         ],
-      ),
-      body: ListView.builder(
-        itemCount: _todos.length,
-        itemBuilder: (context, index) {
-          final todo = _todos[index];
-          return ListTile(
-            title: Text(
-              todo.task,
-              style: TextStyle(
-                decoration: todo.isDone ? TextDecoration.lineThrough : null,
-              ),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (todo.barcode != null) Text('บาร์โค้ด: ${todo.barcode}'),
-                if (todo.name != null) Text('ชื่อสินค้า: ${todo.name}'),
-                if (todo.price != 0.0) Text('ราคา: ${todo.price.toStringAsFixed(2)}'),
-                if (todo.quantity > 0) Text('จำนวน: ${todo.quantity}'),
-                if (todo.imagePath != null) Image.file(File(todo.imagePath!)),
-              ],
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () async {
-                await _dbHelper.deleteToDo(todo.id!);
-                _loadTodos();
-              },
-            ),
-            leading: Checkbox(
-              value: todo.isDone,
-              onChanged: (value) async {
-                final updatedTodo = ToDo(
-                  id: todo.id,
-                  task: todo.task,
-                  isDone: value!,
-                  barcode: todo.barcode,
-                  imagePath: todo.imagePath,
-                  name: todo.name,
-                  price: todo.price,
-                  quantity: todo.quantity,
-                );
-                await _dbHelper.updateToDo(updatedTodo);
-                _loadTodos();
-              },
-            ),
-          );
-        },
       ),
     );
   }

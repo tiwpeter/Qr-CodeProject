@@ -1,3 +1,4 @@
+//พิ่มฟังก์ชันที่ใช้ในการบันทึกการขายและค้นหาสินค้าตามบาร์โค้ด:
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/todo.dart';
@@ -38,9 +39,8 @@ class DatabaseHelper {
         if (oldVersion < 4) {
           db.execute('ALTER TABLE todos ADD COLUMN quantity INTEGER');
         }
-        // Add new schema changes for future versions if needed
       },
-      version: 5, // Increment version number for schema changes
+      version: 5,
     );
   }
 
@@ -105,8 +105,7 @@ class DatabaseHelper {
     return result.first['totalSales']?.toDouble() ?? 0.0;
   }
 
-// 
-Future<List<ToDo>> getAllTodos() async {
+  Future<List<ToDo>> getAllTodos() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('todos');
     return List.generate(maps.length, (i) {
@@ -125,9 +124,16 @@ Future<List<ToDo>> getAllTodos() async {
     return totalPrice;
   }
 
-
-
-
-
-
+  Future<ToDo?> getTodoByBarcode(String barcode) async {
+    final db = await database;
+    final maps = await db.query(
+      'todos',
+      where: 'barcode = ?',
+      whereArgs: [barcode],
+    );
+    if (maps.isNotEmpty) {
+      return ToDo.fromMap(maps.first);
+    }
+    return null;
+  }
 }

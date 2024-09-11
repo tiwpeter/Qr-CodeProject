@@ -4,6 +4,7 @@ import 'package:poject_qr/pages/Homemain.dart';
 import 'package:poject_qr/pages/Homepage.dart';
 import 'package:poject_qr/pages/SalesScreen.dart';
 import 'package:poject_qr/pages/qrcode.dart';
+import 'package:poject_qr/pages/sales_screen.dart';
 import 'package:poject_qr/pages/todo.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
 void main() => runApp(MyApp());
@@ -33,10 +34,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final List<Widget> tabs = [
-    Homepage(), // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+    SalesScreen(), // น้นที่การแสดงข้อมูลการขายที่บันทึกไว้ทั้งหมดและยอดขายรวม
     BarcodeScannerScreen(),
     Todo(),
-    PriceSummaryScreen(),
+    SalesScreenBarcode(),// สร้างหน้าบันทึกการขาย (SalesScreen)
+
+
+
     // StockPage(),
     // ProfilePage(),
     // SettingsPage(),

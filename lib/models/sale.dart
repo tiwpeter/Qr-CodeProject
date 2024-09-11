@@ -15,12 +15,12 @@ class Sale {
 
   // Convert from Map to Sale
   factory Sale.fromMap(Map<String, dynamic> json) => Sale(
-        id: json['id'],
-        todoId: json['todoId'],
-        quantity: json['quantity'],
-        total: json['total'],
-        date: DateTime.parse(json['date']),
-      );
+    id: json['id'],
+    todoId: json['todoId'],
+    quantity: json['quantity'],
+    total: json['total']?.toDouble() ?? 0.0,
+    date: DateTime.parse(json['date']),
+  );
 
   // Convert from Sale to Map
   Map<String, dynamic> toMap() {
@@ -29,7 +29,7 @@ class Sale {
       'todoId': todoId,
       'quantity': quantity,
       'total': total,
-      'date': date.toIso8601String(),
+      'date': date.toIso8601String(), // ใช้ toIso8601String() เพื่อเก็บ DateTime เป็น String
     };
   }
 }
