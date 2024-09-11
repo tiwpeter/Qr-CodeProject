@@ -255,4 +255,18 @@ class DatabaseHelper {
       whereArgs: [id],
     );
   }
+
+Future<ToDo?> getTodoById(int id) async {
+  final db = await database;
+  final maps = await db.query(
+    'todos',
+    where: 'id = ?',
+    whereArgs: [id],
+  );
+  if (maps.isNotEmpty) {
+    return ToDo.fromMap(maps.first);
+  }
+  return null;
+}
+
 }

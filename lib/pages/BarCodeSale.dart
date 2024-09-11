@@ -5,12 +5,12 @@ import '../db/database_helper.dart';
 import '../models/sale.dart';
 import '../models/todo.dart';
 
-class SalesScreen extends StatefulWidget {
+class BarCodeSale extends StatefulWidget {
   @override
-  _SalesScreenState createState() => _SalesScreenState();
+  _BarCodeSaleState createState() => _BarCodeSaleState();
 }
 
-class _SalesScreenState extends State<SalesScreen> {
+class _BarCodeSaleState extends State<BarCodeSale> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final TextEditingController _barcodeController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();

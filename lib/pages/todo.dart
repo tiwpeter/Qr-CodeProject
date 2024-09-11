@@ -3,7 +3,7 @@ import 'dart:io';
 import '../pages/qrcode.dart';  // Assuming this is where BarcodeScannerScreen is defined
 import '../db/database_helper.dart';
 import '../models/todo.dart';
-import '../pages/SalesScreen.dart'; // Import SalesScreen
+import 'BarCodeSale.dart'; // Import BarCodeSale instead of SalesScreen
 
 void main() => runApp(Todo());
 
@@ -53,7 +53,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   void _navigateToSalesScreen() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => SalesScreen(),
+        builder: (context) => BarCodeSale(), // Updated to BarCodeSale
       ),
     );
   }
@@ -90,7 +90,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.sell),
-            onPressed: _navigateToSalesScreen,
+            onPressed: _navigateToSalesScreen, // Updated navigation method
           ),
         ],
       ),
