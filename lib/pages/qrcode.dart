@@ -13,6 +13,9 @@ class BarcodeScannerScreen extends StatefulWidget {
 class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   final ImagePicker _picker = ImagePicker();
   final DatabaseHelper _dbHelper = DatabaseHelper();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
   File? _image;
   String? _barcode;
@@ -51,7 +54,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
         _barcode = null;
       });
     } finally {
-      await barcodeScanner.close(); // Ensure resource is closed properly
+      await barcodeScanner.close();
     }
   }
 
@@ -59,15 +62,17 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
     if (_barcode == null) return;
 
     final todo = ToDo(
-      task: 'Product with Barcode $_barcode',
+      task: _nameController.text.isNotEmpty ? _nameController.text : 'Product with Barcode $_barcode',
       barcode: _barcode!,
       imagePath: _image?.path,
+      name: _nameController.text, // Save name
+      price: double.tryParse(_priceController.text) ?? 0.0, // Save price
     );
     await _dbHelper.insertToDo(todo);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('บันทึกข้อมูลเรียบร้อย')),
     );
-    Navigator.of(context).pop(); // กลับไปที่หน้าหลัก
+    Navigator.of(context).pop();
   }
 
   @override
@@ -76,25 +81,45 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       appBar: AppBar(
         title: const Text('สแกนบาร์โค้ด/QR Code'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
-            ),
-            const SizedBox(height: 20),
-            _image != null ? Image.file(_image!) : const SizedBox.shrink(),
-            const SizedBox(height: 20),
-            Text(_scanResult),
-            const SizedBox(height: 20),
-            if (_barcode != null)
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               ElevatedButton(
-                onPressed: _saveToDoItem,
-                child: const Text('บันทึกข้อมูล'),
+                onPressed: _pickImage,
+                child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
               ),
-          ],
+              const SizedBox(height: 20),
+              _image != null ? Image.file(_image!) : const SizedBox.shrink(),
+              const SizedBox(height: 20),
+              Text(_scanResult),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'ชื่อสินค้า',
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _priceController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'ราคา',
+                ),
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+              ),
+              const SizedBox(height: 20),
+              if (_barcode != null)
+                ElevatedButton(
+                  onPressed: _saveToDoItem,
+                  child: const Text('บันทึกข้อมูล'),
+                ),
+            ],
+          ),
         ),
       ),
     );

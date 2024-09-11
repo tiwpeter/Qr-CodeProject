@@ -46,7 +46,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       MaterialPageRoute(
         builder: (context) => BarcodeScannerScreen(),
       ),
-    ).then((_) => _loadTodos()); // โหลดข้อมูลใหม่เมื่อกลับมา
+    ).then((_) => _loadTodos());
   }
 
   void _updateToDo(ToDo todo) async {
@@ -56,6 +56,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       isDone: !todo.isDone,
       barcode: todo.barcode,
       imagePath: todo.imagePath,
+      name: todo.name, // Ensure name is passed
+      price: todo.price, // Ensure price is passed
     );
     await _dbHelper.updateToDo(updatedTodo);
     _loadTodos();
@@ -93,6 +95,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (todo.barcode != null) Text('บาร์โค้ด: ${todo.barcode}'),
+                if (todo.name != null) Text('ชื่อสินค้า: ${todo.name}'), // Display name
+                if (todo.price != 0.0) Text('ราคา: ${todo.price.toStringAsFixed(2)}'), // Display price
                 if (todo.imagePath != null) Image.file(File(todo.imagePath!)),
               ],
             ),

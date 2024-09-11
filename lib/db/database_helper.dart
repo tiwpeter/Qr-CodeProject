@@ -14,24 +14,32 @@ class DatabaseHelper {
     return _database!;
   }
   
-Future<Database> _initDatabase() async {
-  return openDatabase(
-    join(await getDatabasesPath(), 'todo_database_new.db'), // เปลี่ยนชื่อฐานข้อมูล
-    onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT)',
-      );
-    },
-    onUpgrade: (db, oldVersion, newVersion) {
-      if (oldVersion < 2) {
-        db.execute(
-          'ALTER TABLE todos ADD COLUMN imagePath TEXT',
+  Future<Database> _initDatabase() async {
+    return openDatabase(
+      join(await getDatabasesPath(), 'todo_database_new.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT, name TEXT, price REAL)',
         );
-      }
-    },
-    version: 2, // เพิ่มเวอร์ชันที่เพิ่มขึ้นจาก 1 เป็น 2
-  );
-}
+      },
+      onUpgrade: (db, oldVersion, newVersion) {
+        if (oldVersion < 2) {
+          db.execute(
+            'ALTER TABLE todos ADD COLUMN imagePath TEXT',
+          );
+        }
+        if (oldVersion < 3) { // Check for older versions and add columns as needed
+          db.execute(
+            'ALTER TABLE todos ADD COLUMN name TEXT',
+          );
+          db.execute(
+            'ALTER TABLE todos ADD COLUMN price REAL',
+          );
+        }
+      },
+      version: 3, // Update version
+    );
+  }
 
   Future<void> insertToDo(ToDo todo) async {
     final db = await database;
