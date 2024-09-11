@@ -2,34 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'dart:io';
+import '../db/database_helper.dart';
+import '../models/todo.dart';
 
-void main() => runApp(const Qrcode());
-
-class Qrcode extends StatelessWidget {
-  const Qrcode({Key? key}) : super(key: key);
-
+class BarcodeScannerScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Scan Barcode from Image')),
-        body: const BarcodeScannerFromImageScreen(),
-      ),
-    );
-  }
+  _BarcodeScannerScreenState createState() => _BarcodeScannerScreenState();
 }
 
-class BarcodeScannerFromImageScreen extends StatefulWidget {
-  const BarcodeScannerFromImageScreen({Key? key}) : super(key: key);
-
-  @override
-  _BarcodeScannerFromImageScreenState createState() => _BarcodeScannerFromImageScreenState();
-}
-
-class _BarcodeScannerFromImageScreenState extends State<BarcodeScannerFromImageScreen> {
+class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   final ImagePicker _picker = ImagePicker();
+  final DatabaseHelper _dbHelper = DatabaseHelper();
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
   File? _image;
+  String? _barcode;
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -37,7 +23,7 @@ class _BarcodeScannerFromImageScreenState extends State<BarcodeScannerFromImageS
       setState(() {
         _image = File(pickedFile.path);
       });
-      _scanBarcodeFromImage(_image!);
+      await _scanBarcodeFromImage(_image!);
     }
   }
 
@@ -47,35 +33,69 @@ class _BarcodeScannerFromImageScreenState extends State<BarcodeScannerFromImageS
 
     try {
       final barcodes = await barcodeScanner.processImage(inputImage);
-      setState(() {
-        _scanResult = barcodes.isNotEmpty
-            ? barcodes.first.displayValue ?? 'ไม่พบข้อมูลบาร์โค้ด'
-            : 'ไม่พบบาร์โค้ดในภาพ';
-      });
+      if (barcodes.isNotEmpty) {
+        final barcode = barcodes.first.displayValue;
+        setState(() {
+          _scanResult = barcode ?? 'ไม่พบข้อมูลบาร์โค้ด';
+          _barcode = barcode;
+        });
+      } else {
+        setState(() {
+          _scanResult = 'ไม่พบบาร์โค้ดในภาพ';
+          _barcode = null;
+        });
+      }
     } catch (e) {
       setState(() {
         _scanResult = 'เกิดข้อผิดพลาด: $e';
+        _barcode = null;
       });
     } finally {
       await barcodeScanner.close(); // Ensure resource is closed properly
     }
   }
 
+  Future<void> _saveToDoItem() async {
+    if (_barcode == null) return;
+
+    final todo = ToDo(
+      task: 'Product with Barcode $_barcode',
+      barcode: _barcode!,
+      imagePath: _image?.path,
+    );
+    await _dbHelper.insertToDo(todo);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('บันทึกข้อมูลเรียบร้อย')),
+    );
+    Navigator.of(context).pop(); // กลับไปที่หน้าหลัก
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: _pickImage,
-            child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
-          ),
-          const SizedBox(height: 20),
-          _image != null ? Image.file(_image!) : const SizedBox.shrink(),
-          const SizedBox(height: 20),
-          Text(_scanResult),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('สแกนบาร์โค้ด/QR Code'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
+            ),
+            const SizedBox(height: 20),
+            _image != null ? Image.file(_image!) : const SizedBox.shrink(),
+            const SizedBox(height: 20),
+            Text(_scanResult),
+            const SizedBox(height: 20),
+            if (_barcode != null)
+              ElevatedButton(
+                onPressed: _saveToDoItem,
+                child: const Text('บันทึกข้อมูล'),
+              ),
+          ],
+        ),
       ),
     );
   }

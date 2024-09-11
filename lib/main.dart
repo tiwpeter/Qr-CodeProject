@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/pages/Homemain.dart';
 import 'package:poject_qr/pages/Homepage.dart';
-import 'package:poject_qr/pages/qrcode.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+import 'package:poject_qr/pages/qrcode.dart';
+import 'package:poject_qr/pages/todo.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
 void main() => runApp(MyApp());
 
@@ -31,8 +32,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> tabs = [
     Homepage(), // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
-    Qrcode(),
-    // เพิ่มหน้าที่เหลือที่ต้องการให้แสดง
+    BarcodeScannerScreen(),
+    Todo(),
     // ตัวอย่าง:
     // StockPage(),
     // ProfilePage(),
