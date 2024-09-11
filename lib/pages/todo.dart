@@ -46,7 +46,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       MaterialPageRoute(
         builder: (context) => BarcodeScannerScreen(),
       ),
-    ).then((_) => _loadTodos());
+    ).then((_) => _loadTodos()); // Reload todos on return
   }
 
   void _updateToDo(ToDo todo) async {
@@ -56,8 +56,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       isDone: !todo.isDone,
       barcode: todo.barcode,
       imagePath: todo.imagePath,
-      name: todo.name, // Ensure name is passed
-      price: todo.price, // Ensure price is passed
+      name: todo.name,
+      price: todo.price,
+      quantity: todo.quantity, // Ensure quantity is passed
     );
     await _dbHelper.updateToDo(updatedTodo);
     _loadTodos();
@@ -95,8 +96,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (todo.barcode != null) Text('บาร์โค้ด: ${todo.barcode}'),
-                if (todo.name != null) Text('ชื่อสินค้า: ${todo.name}'), // Display name
-                if (todo.price != 0.0) Text('ราคา: ${todo.price.toStringAsFixed(2)}'), // Display price
+                if (todo.name != null) Text('ชื่อสินค้า: ${todo.name}'),
+                if (todo.price != 0.0) Text('ราคา: ${todo.price.toStringAsFixed(2)}'),
+                if (todo.quantity > 0) Text('จำนวน: ${todo.quantity}'), // Display quantity
                 if (todo.imagePath != null) Image.file(File(todo.imagePath!)),
               ],
             ),

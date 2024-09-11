@@ -15,6 +15,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
 
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
   File? _image;
@@ -65,8 +66,9 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       task: _nameController.text.isNotEmpty ? _nameController.text : 'Product with Barcode $_barcode',
       barcode: _barcode!,
       imagePath: _image?.path,
-      name: _nameController.text, // Save name
-      price: double.tryParse(_priceController.text) ?? 0.0, // Save price
+      name: _nameController.text,
+      price: double.tryParse(_priceController.text) ?? 0.0,
+      quantity: int.tryParse(_quantityController.text) ?? 1,
     );
     await _dbHelper.insertToDo(todo);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -81,45 +83,55 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       appBar: AppBar(
         title: const Text('สแกนบาร์โค้ด/QR Code'),
       ),
-      body: Padding(
+      body: SingleChildScrollView( // Wrap content in a scroll view
         padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _pickImage,
+              child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
+            ),
+            const SizedBox(height: 20),
+            _image != null ? Image.file(_image!) : const SizedBox.shrink(),
+            const SizedBox(height: 20),
+            Text(_scanResult),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'ชื่อสินค้า',
+              ),
+              maxLines: 1, // Single line input
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _priceController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'ราคา',
+              ),
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              maxLines: 1,
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _quantityController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'จำนวนสินค้า',
+              ),
+              keyboardType: TextInputType.number,
+              maxLines: 1,
+            ),
+            const SizedBox(height: 20),
+            if (_barcode != null)
               ElevatedButton(
-                onPressed: _pickImage,
-                child: const Text('เลือกรูปภาพจากคลังรูปภาพ'),
+                onPressed: _saveToDoItem,
+                child: const Text('บันทึกข้อมูล'),
               ),
-              const SizedBox(height: 20),
-              _image != null ? Image.file(_image!) : const SizedBox.shrink(),
-              const SizedBox(height: 20),
-              Text(_scanResult),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'ชื่อสินค้า',
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _priceController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'ราคา',
-                ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-              ),
-              const SizedBox(height: 20),
-              if (_barcode != null)
-                ElevatedButton(
-                  onPressed: _saveToDoItem,
-                  child: const Text('บันทึกข้อมูล'),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );

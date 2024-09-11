@@ -4,8 +4,9 @@ class ToDo {
   bool isDone;
   String? barcode;
   String? imagePath;
-  String? name; // New field for name
-  double price; // New field for price
+  String? name;
+  double price;
+  int quantity; // New field for quantity
 
   ToDo({
     this.id,
@@ -13,8 +14,9 @@ class ToDo {
     this.isDone = false,
     this.barcode,
     this.imagePath,
-    this.name, // Initialize name
-    this.price = 0.0, // Initialize price
+    this.name,
+    this.price = 0.0,
+    this.quantity = 1, // Initialize quantity
   });
 
   // Convert from Map to ToDo
@@ -24,8 +26,9 @@ class ToDo {
         isDone: json['isDone'] == 1,
         barcode: json['barcode'],
         imagePath: json['imagePath'],
-        name: json['name'], // Load name
-        price: json['price']?.toDouble() ?? 0.0, // Load price
+        name: json['name'],
+        price: json['price']?.toDouble() ?? 0.0,
+        quantity: json['quantity'] ?? 1, // Load quantity
       );
 
   // Convert from ToDo to Map
@@ -36,8 +39,9 @@ class ToDo {
       'isDone': isDone ? 1 : 0,
       'barcode': barcode,
       'imagePath': imagePath,
-      'name': name, // Save name
-      'price': price, // Save price
+      'name': name,
+      'price': price,
+      'quantity': quantity, // Save quantity
     };
   }
 }

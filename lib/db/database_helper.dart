@@ -19,7 +19,7 @@ class DatabaseHelper {
       join(await getDatabasesPath(), 'todo_database_new.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT, name TEXT, price REAL)',
+          'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT, name TEXT, price REAL, quantity INTEGER)',
         );
       },
       onUpgrade: (db, oldVersion, newVersion) {
@@ -28,7 +28,7 @@ class DatabaseHelper {
             'ALTER TABLE todos ADD COLUMN imagePath TEXT',
           );
         }
-        if (oldVersion < 3) { // Check for older versions and add columns as needed
+        if (oldVersion < 3) {
           db.execute(
             'ALTER TABLE todos ADD COLUMN name TEXT',
           );
@@ -36,8 +36,13 @@ class DatabaseHelper {
             'ALTER TABLE todos ADD COLUMN price REAL',
           );
         }
+        if (oldVersion < 4) { // Check for older versions and add columns as needed
+          db.execute(
+            'ALTER TABLE todos ADD COLUMN quantity INTEGER',
+          );
+        }
       },
-      version: 3, // Update version
+      version: 4, // Update version
     );
   }
 
