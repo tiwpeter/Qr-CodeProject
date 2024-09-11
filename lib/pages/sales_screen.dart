@@ -14,6 +14,8 @@ class _SalesScreenBarcodeState extends State<SalesScreenBarcode> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Sale> _sales = [];
   double _totalSales = 0.0;
+  final TextEditingController _barcodeController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
 
   @override
   void initState() {
@@ -30,6 +32,38 @@ class _SalesScreenBarcodeState extends State<SalesScreenBarcode> {
     });
   }
 
+  void _recordSale() async {
+    final barcode = _barcodeController.text;
+    final quantity = int.tryParse(_quantityController.text) ?? 0;
+
+    if (barcode.isEmpty || quantity <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('กรุณากรอกข้อมูลให้ถูกต้อง')),
+      );
+      return;
+    }
+
+    try {
+      final todo = await _dbHelper.getTodoByBarcode(barcode);
+      if (todo == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('ไม่พบสินค้าด้วยบาร์โค้ดนี้')),
+        );
+        return;
+      }
+
+      final total = todo.price * quantity;
+      await _dbHelper.recordSale(barcode, quantity, total);
+      _loadSales();
+      _barcodeController.clear();
+      _quantityController.clear();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('เกิดข้อผิดพลาด: ${e.toString()}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +75,26 @@ class _SalesScreenBarcodeState extends State<SalesScreenBarcode> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text('ยอดขายรวม: ${_totalSales.toStringAsFixed(2)} บาท'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _barcodeController,
+                  decoration: InputDecoration(labelText: 'บาร์โค้ดสินค้า'),
+                ),
+                TextField(
+                  controller: _quantityController,
+                  decoration: InputDecoration(labelText: 'จำนวน'),
+                  keyboardType: TextInputType.number,
+                ),
+                ElevatedButton(
+                  onPressed: _recordSale,
+                  child: Text('บันทึกการขาย'),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: ListView.builder(

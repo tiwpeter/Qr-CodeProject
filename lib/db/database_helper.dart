@@ -8,17 +8,12 @@ class DatabaseHelper {
   factory DatabaseHelper() => _instance;
   DatabaseHelper._internal();
 
-
-
-
-
   static Database? _database;
 
-Future<void> _deleteDatabase() async {
-  final dbPath = join(await getDatabasesPath(), 'todo_database_new.db');
-  await deleteDatabase(dbPath);
-}
-
+  Future<void> _deleteDatabase() async {
+    final dbPath = join(await getDatabasesPath(), 'todo_database_new.db');
+    await deleteDatabase(dbPath);
+  }
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -27,35 +22,41 @@ Future<void> _deleteDatabase() async {
   }
 
   Future<Database> _initDatabase() async {
-  final db = await openDatabase(
-    join(await getDatabasesPath(), 'todo_database_new.db'),
-    onCreate: (db, version) {
-      db.execute(
-        'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT, name TEXT, price REAL, quantity INTEGER)',
-      );
-      db.execute(
-        'CREATE TABLE sales(id INTEGER PRIMARY KEY AUTOINCREMENT, todoId INTEGER, quantity INTEGER, total REAL, date TEXT, FOREIGN KEY(todoId) REFERENCES todos(id))',
-      );
-    },
-    onUpgrade: (db, oldVersion, newVersion) {
-      if (oldVersion < 2) {
-        db.execute('ALTER TABLE todos ADD COLUMN imagePath TEXT');
-      }
-      if (oldVersion < 3) {
-        db.execute('ALTER TABLE todos ADD COLUMN name TEXT');
-        db.execute('ALTER TABLE todos ADD COLUMN price REAL');
-      }
-      if (oldVersion < 4) {
-        db.execute('ALTER TABLE todos ADD COLUMN quantity INTEGER');
-      }
-    },
-    version: 5,
-  );
-  // Check if tables exist
-  final tables = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
-  print('Existing tables: ${tables.map((e) => e['name']).toList()}');
-  return db;
-}
+    final db = await openDatabase(
+      join(await getDatabasesPath(), 'todo_database_new.db'),
+      onCreate: (db, version) {
+        db.execute(
+          'CREATE TABLE todos(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT, isDone INTEGER, barcode TEXT, imagePath TEXT, name TEXT, price REAL, quantity INTEGER)',
+        );
+        db.execute(
+          'CREATE TABLE sales(id INTEGER PRIMARY KEY AUTOINCREMENT, todoId INTEGER, quantity INTEGER, total REAL, date TEXT, FOREIGN KEY(todoId) REFERENCES todos(id))',
+        );
+      },
+      onUpgrade: (db, oldVersion, newVersion) {
+        if (oldVersion < 2) {
+          db.execute('ALTER TABLE todos ADD COLUMN imagePath TEXT');
+        }
+        if (oldVersion < 3) {
+          db.execute('ALTER TABLE todos ADD COLUMN name TEXT');
+          db.execute('ALTER TABLE todos ADD COLUMN price REAL');
+        }
+        if (oldVersion < 4) {
+          db.execute('ALTER TABLE todos ADD COLUMN quantity INTEGER');
+        }
+        if (oldVersion < 5) {
+          db.execute(
+            'CREATE TABLE IF NOT EXISTS sales(id INTEGER PRIMARY KEY AUTOINCREMENT, todoId INTEGER, quantity INTEGER, total REAL, date TEXT, FOREIGN KEY(todoId) REFERENCES todos(id))',
+          );
+        }
+      },
+      version: 5,
+    );
+
+    // Check if tables exist
+    final tables = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+    print('Existing tables: ${tables.map((e) => e['name']).toList()}');
+    return db;
+  }
 
   // ToDo Methods
   Future<void> insertToDo(ToDo todo) async {
@@ -95,8 +96,23 @@ Future<void> _deleteDatabase() async {
   }
 
   // Sale Methods
+  Future<void> _ensureSalesTableExists(Database db) async {
+    final tables = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+    final salesTableExists = tables.any((table) => table['name'] == 'sales');
+
+    if (!salesTableExists) {
+      await db.execute(
+        'CREATE TABLE sales(id INTEGER PRIMARY KEY AUTOINCREMENT, todoId INTEGER, quantity INTEGER, total REAL, date TEXT, FOREIGN KEY(todoId) REFERENCES todos(id))',
+      );
+    }
+  }
+
   Future<void> insertSale(Sale sale) async {
     final db = await database;
+
+    // Ensure the sales table exists before inserting
+    await _ensureSalesTableExists(db);
+
     await db.insert(
       'sales',
       sale.toMap(),
@@ -182,6 +198,9 @@ Future<void> _deleteDatabase() async {
 
   Future<void> recordSale(String barcode, int quantity, double total) async {
     final db = await database;
+
+    // Ensure the sales table exists before inserting
+    await _ensureSalesTableExists(db);
 
     // ค้นหา `ToDo` ที่ตรงกับบาร์โค้ด
     final todoMaps = await db.query(
