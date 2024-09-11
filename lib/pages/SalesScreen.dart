@@ -1,4 +1,3 @@
-//หน้าจอที่ให้ผู้ใช้สามารถนำสินค้าออกจากคลังโดยใช้ราคาและจำนวนที่เลือก โดยใช้บาร์โค้ดในการค้นหาสินค้า และสามารถบันทึกการขายได้เมื่อกดปุ่ม "Sell
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,15 +18,10 @@ class _SalesScreenState extends State<SalesScreen> {
   ToDo? _selectedToDo;
   double _totalPrice = 0.0;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  Future<void> _scanBarcode() async {
-    // ใช้ ImagePicker เลือกรูปภาพจากแกลเลอรี
+  Future<void> _selectImageAndScanBarcode() async {
     final ImagePicker _picker = ImagePicker();
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    
     if (pickedFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('ไม่เลือกภาพ')),
@@ -143,8 +137,8 @@ class _SalesScreenState extends State<SalesScreen> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: _scanBarcode,
-              child: const Text('Scan Barcode'),
+              onPressed: _selectImageAndScanBarcode,
+              child: const Text('Select Image and Scan Barcode'),
             ),
             const SizedBox(height: 20),
             if (_selectedToDo != null) ...[
