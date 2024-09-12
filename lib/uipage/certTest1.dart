@@ -42,12 +42,12 @@ class CertTest extends StatelessWidget {
                         // View One
                         Container(
                           alignment: Alignment.center,
-                          height: 70,
+                          height: 30,
                           padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'View One',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
+                       child: Image.asset(
+        'assets/images/input_1.png',
+        height: 70, // ปรับขนาดตามที่ต้องการ
+      ),
                         ),
                         SizedBox(width: 8),
                         // Nested Rows and Columns
