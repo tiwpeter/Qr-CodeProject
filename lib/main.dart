@@ -6,6 +6,7 @@ import 'package:poject_qr/pages/BarCodeSale.dart';
 import 'package:poject_qr/pages/qrcode.dart';
 import 'package:poject_qr/pages/sales_screen.dart';
 import 'package:poject_qr/pages/todo.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+import 'package:poject_qr/pagesTest/Test.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
 void main() => runApp(MyApp());
 
@@ -34,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
 
   final List<Widget> tabs = [
-    BarCodeSale(), // น้นที่การแสดงข้อมูลการขายที่บันทึกไว้ทั้งหมดและยอดขายรวม
+    MyPageQr2(),
+   // BarCodeSale(), // น้นที่การแสดงข้อมูลการขายที่บันทึกไว้ทั้งหมดและยอดขายรวม
     BarcodeScannerScreen(),
     Todo(),
     SalesScreen(),

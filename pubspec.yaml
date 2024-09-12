@@ -45,5 +45,9 @@ flutter:
     - assets/images/gallery_11.png
     - assets/images/qrcode.png
     - assets/images/revenue.png
+    - assets/icon/add.png
+    - assets/icon/loupe.png
+    - assets/icon/up-selling.png
+
 
     
