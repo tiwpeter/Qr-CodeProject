@@ -67,26 +67,22 @@ class CertTest extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      '29',
+                                      '9/6/2024',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     SizedBox(width: 20),
                                     Text(
-                                      'บาท',
+                                      'Bankok',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ],
                                 ),
-                                Text(
-                                  '29',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 16),
-                                ),
+                               
                               ],
                             ),
-                            SizedBox(width: 50),
+                            SizedBox(width: 20),
                             // Row with Stack and Image
                             Row(
   crossAxisAlignment: CrossAxisAlignment.center,
