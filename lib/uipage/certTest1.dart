@@ -79,7 +79,7 @@ class CertTest extends StatelessWidget {
                                 alignment: Alignment.center,
                                 children: [
                                   Image.asset(
-                                    'assets/delete_1.png',
+                                    'assets/images/delete_1.png',
                                     height: 14,
                                   ),
                                 ],
@@ -94,7 +94,7 @@ class CertTest extends StatelessWidget {
                                 alignment: Alignment.center,
                                 children: [
                                   Image.asset(
-                                    'assets/add_11.png',
+                                    'assets/images/add_11.png',
                                     height: 38,
                                   ),
                                 ],
