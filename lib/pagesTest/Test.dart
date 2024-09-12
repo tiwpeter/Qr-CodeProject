@@ -68,7 +68,7 @@ class MyHomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(right: 4),
+                            padding: const EdgeInsets.only(right: 42), // Increased spacing
                             child: Text('Add', style: TextStyle(fontSize: 16)),
                           ),
                           CustomButton(
@@ -80,7 +80,7 @@ class MyHomePage extends StatelessWidget {
                             alignment: Alignment.center,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 16),
+                            padding: const EdgeInsets.only(left: 42), // Increased spacing
                             child: Text('search', style: TextStyle(fontSize: 16)),
                           ),
                         ],
