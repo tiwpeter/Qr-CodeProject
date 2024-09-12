@@ -1,4 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyPageQr2());
@@ -16,6 +20,37 @@ class MyPageQr2 extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImageAndScan(BuildContext context) async {
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        final inputImage = InputImage.fromFilePath(pickedFile.path);
+        final barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+        final barcodes = await barcodeScanner.processImage(inputImage);
+
+        if (barcodes.isNotEmpty) {
+          final barcode = barcodes.first;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultPage(result: barcode.displayValue ?? 'No result'),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No barcode found')),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error occurred: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,13 +106,16 @@ class MyHomePage extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 42), // Increased spacing
                             child: Text('Add', style: TextStyle(fontSize: 16)),
                           ),
-                          CustomButton(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue), // Example border color
-                              borderRadius: BorderRadius.circular(8),
+                          GestureDetector(
+                            onTap: () => _pickImageAndScan(context), // ฟังก์ชันสำหรับการเลือกภาพและสแกนบาร์โค้ด
+                            child: CustomButton(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blue), // Example border color
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text('sell', style: TextStyle(color: Colors.blue)), // Ensure text is visible
+                              alignment: Alignment.center,
                             ),
-                            child: Text('sell', style: TextStyle(color: Colors.blue)), // Ensure text is visible
-                            alignment: Alignment.center,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 42), // Increased spacing
@@ -94,21 +132,30 @@ class MyHomePage extends StatelessWidget {
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.asset('assets/icon/add.png', height: 32),
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Add icon clicked'),
+                          child: Image.asset('assets/icon/add.png', height: 32),
+                        ),
                       ],
                     ),
                     SizedBox(width: 64), // Spacing between images
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.asset('assets/icon/up-selling.png', height: 32),
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Up-selling icon clicked'),
+                          child: Image.asset('assets/icon/up-selling.png', height: 32),
+                        ),
                       ],
                     ),
                     SizedBox(width: 64), // Spacing between images
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.asset('assets/icon/loupe.png', height: 32),
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Loupe icon clicked'),
+                          child: Image.asset('assets/icon/loupe.png', height: 32),
+                        ),
                       ],
                     ),
                   ],
@@ -127,6 +174,15 @@ class MyHomePage extends StatelessWidget {
       ],
     );
   }
+
+  void _navigateToResultPage(BuildContext context, String result) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultPage(result: result),
+      ),
+    );
+  }
 }
 
 class CustomButton extends StatelessWidget {
@@ -143,6 +199,24 @@ class CustomButton extends StatelessWidget {
       alignment: alignment,
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Added padding for better button appearance
       child: child,
+    );
+  }
+}
+
+class ResultPage extends StatelessWidget {
+  final String result;
+
+  ResultPage({required this.result});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Result Page'),
+      ),
+      body: Center(
+        child: Text('Scanned Barcode: $result'),
+      ),
     );
   }
 }
