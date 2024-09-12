@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:poject_qr/pagesTest/ResultPage.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+import 'package:poject_qr/pageSale/ScanAndSellPage.dart';  // Check this path and class
 
 void main() {
   runApp(MyPageQr2());
@@ -24,7 +24,7 @@ class MyPageQr2 extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ResultPage(result: barcode),
+              builder: (context) => ScanAndSellPage(result: barcode),
             ),
           );
         } else {
@@ -42,104 +42,102 @@ class MyPageQr2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          AppBar(
-            toolbarHeight: 72,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(72.0),
+          child: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'shop_one',
-                  style: TextStyle(fontSize: 18),
-                ),
+                Text('shop_one', style: TextStyle(fontSize: 18)),
                 CustomButton(
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    'find',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: Text('find', style: TextStyle(color: Colors.white)),
                   alignment: Alignment.center,
                 ),
               ],
             ),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 38),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          height: 266,
-                          color: Colors.grey[200],
-                          child: Text('view_two'),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 42),
-                              child: Text('Add', style: TextStyle(fontSize: 16)),
-                            ),
-                            GestureDetector(
-                              onTap: () => _pickImageAndScan(context),
-                              child: CustomButton(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text('sell', style: TextStyle(color: Colors.blue)),
-                                alignment: Alignment.center,
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 38),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            height: 266,
+                            color: Colors.grey[200],
+                            child: Text('view_two'),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 42),
+                                child: Text('Add', style: TextStyle(fontSize: 16)),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 42),
-                              child: Text('search', style: TextStyle(fontSize: 16)),
-                            ),
-                          ],
+                              GestureDetector(
+                                onTap: () => _pickImageAndScan(context),
+                                child: CustomButton(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.blue),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text('sell', style: TextStyle(color: Colors.blue)),
+                                  alignment: Alignment.center,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 42),
+                                child: Text('search', style: TextStyle(fontSize: 16)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Add icon clicked'),
+                          child: Image.asset('assets/icon/add.png', height: 32),
+                        ),
+                        SizedBox(width: 64),
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Up-selling icon clicked'),
+                          child: Image.asset('assets/icon/up-selling.png', height: 32),
+                        ),
+                        SizedBox(width: 64),
+                        GestureDetector(
+                          onTap: () => _navigateToResultPage(context, 'Loupe icon clicked'),
+                          child: Image.asset('assets/icon/loupe.png', height: 32),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _navigateToResultPage(context, 'Add icon clicked'),
-                        child: Image.asset('assets/icon/add.png', height: 32),
-                      ),
-                      SizedBox(width: 64),
-                      GestureDetector(
-                        onTap: () => _navigateToResultPage(context, 'Up-selling icon clicked'),
-                        child: Image.asset('assets/icon/up-selling.png', height: 32),
-                      ),
-                      SizedBox(width: 64),
-                      GestureDetector(
-                        onTap: () => _navigateToResultPage(context, 'Loupe icon clicked'),
-                        child: Image.asset('assets/icon/loupe.png', height: 32),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 84,
-                    margin: EdgeInsets.only(top: 78, bottom: 4),
-                    color: Colors.grey[300],
-                    child: Text('view_one'),
-                  ),
-                ],
+                    Container(
+                      alignment: Alignment.center,
+                      height: 84,
+                      margin: EdgeInsets.only(top: 78, bottom: 4),
+                      color: Colors.grey[300],
+                      child: Text('view_one'),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -148,12 +146,11 @@ class MyPageQr2 extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ResultPage(result: result),
+        builder: (context) => ScanAndSellPage(result: result),
       ),
     );
   }
 }
-
 
 class CustomButton extends StatelessWidget {
   final BoxDecoration decoration;

@@ -55,7 +55,7 @@ class _ResultPageState extends State<ResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Result Page'),
+        title: Text('ตระกร้า'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
