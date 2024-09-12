@@ -69,7 +69,7 @@ class CertTest extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(width: 8),
+                          SizedBox(width: 110),
                           // Row with Stack and Image
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,13 +89,13 @@ class CertTest extends StatelessWidget {
                                 '0',
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(width: 4),
+                              SizedBox(width: 24),
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Image.asset(
                                     'assets/images/add_11.png',
-                                    height: 38,
+                                    height: 14,
                                   ),
                                 ],
                               ),
