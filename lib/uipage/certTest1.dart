@@ -86,7 +86,7 @@ class CertTest extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(width: 110),
+                            SizedBox(width: 50),
                             // Row with Stack and Image
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
