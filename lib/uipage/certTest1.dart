@@ -21,7 +21,7 @@ class CertTest extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'ตระกร้า',
+                      hintText: 'Log',
                       fillColor: Colors.grey[200],
                       filled: true,
                     ),
