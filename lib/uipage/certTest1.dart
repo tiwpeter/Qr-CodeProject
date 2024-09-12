@@ -89,32 +89,36 @@ class CertTest extends StatelessWidget {
                             SizedBox(width: 50),
                             // Row with Stack and Image
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
+  crossAxisAlignment: CrossAxisAlignment.center,
+  mainAxisAlignment: MainAxisAlignment.end,
+  children: [
+    Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          '10',
+          style: TextStyle(fontSize: 14, color: Colors.green),
+        ),
+      ],
+    ),
+    SizedBox(width: 24),
                                 Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/delete_1.png',
-                                      height: 14,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 24),
-                                Text(
-                                  '0',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                SizedBox(width: 24),
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/add_11.png',
-                                      height: 14,
-                                    ),
+  alignment: Alignment.center,
+  children: [
+    Image.asset(
+      'assets/images/configuration_1.png',
+      height: 14,
+    ),
+  ],
+),
+                              SizedBox(width: 24),
+Stack(
+  alignment: Alignment.center,
+  children: [
+    Text(
+      '10',
+      style: TextStyle(fontSize: 14, color: Colors.red),
+    ),
                                   ],
                                 ),
                               ],
