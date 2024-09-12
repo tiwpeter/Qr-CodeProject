@@ -21,89 +21,108 @@ class CertTest extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Your hint text here', // Customize as needed
+                      hintText: 'ตระกร้า',
+                      fillColor: Colors.grey[200],
+                      filled: true,
                     ),
                     controller: TextEditingController(),
                     textAlign: TextAlign.center,
                   ),
+                  SizedBox(height: 12), // Space between elements
                   // Inner Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // View One
-                      Container(
-                        alignment: Alignment.center,
-                        height: 70,
-                        child: Text('View One'), // Customize as needed
-                      ),
-                      SizedBox(width: 8), // Adjust spacing as needed
-                      // Nested Rows and Columns
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Column with texts and rows
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Bankok',
-                                textAlign: TextAlign.center,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '29',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(width: 20),
-                                  Text(
-                                    'บาท',
-                                    textAlign: TextAlign.center, // Center alignment for text
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '29',
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // View One
+                        Container(
+                          alignment: Alignment.center,
+                          height: 70,
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'View One',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(width: 110),
-                          // Row with Stack and Image
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/delete_1.png',
-                                    height: 14,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 24),
-                              Text(
-                                '0',
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(width: 24),
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/add_11.png',
-                                    height: 14,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        SizedBox(width: 8),
+                        // Nested Rows and Columns
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Column with texts and rows
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Bankok',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '29',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    SizedBox(width: 20),
+                                    Text(
+                                      'บาท',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '29',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 110),
+                            // Row with Stack and Image
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/delete_1.png',
+                                      height: 14,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 24),
+                                Text(
+                                  '0',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(width: 24),
+                                Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/add_11.png',
+                                      height: 14,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -119,14 +138,17 @@ class CertTest extends StatelessWidget {
                       Text(
                         'bankok_one',
                         textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16),
                       ),
                       Text(
                         'bankok_two',
                         textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16),
                       ),
                       Text(
                         'ยังไม่รวมส่วนลด',
                         textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),
@@ -140,11 +162,13 @@ class CertTest extends StatelessWidget {
                           Text(
                             '32',
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(width: 26),
                           Text(
                             'บาท',
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
                           ),
                         ],
                       ),
@@ -154,11 +178,13 @@ class CertTest extends StatelessWidget {
                           Text(
                             '29',
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(width: 24),
                           Text(
                             'บาท',
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
                           ),
                         ],
                       ),
