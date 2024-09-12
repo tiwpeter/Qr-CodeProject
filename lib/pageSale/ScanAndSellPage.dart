@@ -8,7 +8,7 @@ import '../models/todo.dart';
 class ScanAndSellPage extends StatefulWidget {
   final String result;
 
-  ScanAndSellPage({required this.result});  // Add result parameter
+  ScanAndSellPage({required this.result});
 
   @override
   _ScanAndSellPageState createState() => _ScanAndSellPageState();
@@ -19,6 +19,7 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
   final TextEditingController _quantityController = TextEditingController();
 
   final List<ToDo> _scannedProducts = [];
+  final Map<int, int> _productQuantities = {}; // Track quantities for each product
   double _totalPrice = 0.0;
 
   @override
@@ -69,8 +70,10 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
     if (product != null) {
       setState(() {
         // Avoid duplicate products in the list
-        _scannedProducts.removeWhere((p) => p.barcode == barcode);
-        _scannedProducts.add(product);
+        if (!_scannedProducts.contains(product)) {
+          _scannedProducts.add(product);
+          _productQuantities[product.id!] = 1; // Initialize quantity for each product
+        }
         _calculateTotalPrice();
       });
     } else {
@@ -82,8 +85,8 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
 
   void _calculateTotalPrice() {
     double total = 0.0;
-    final quantity = int.tryParse(_quantityController.text) ?? 0;
     for (var product in _scannedProducts) {
+      final quantity = _productQuantities[product.id!] ?? 0;
       total += product.price * quantity;
     }
     setState(() {
@@ -92,18 +95,18 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
   }
 
   Future<void> _recordSale() async {
-    final quantity = int.tryParse(_quantityController.text) ?? 0;
-    if (_scannedProducts.isEmpty || quantity <= 0) {
+    if (_scannedProducts.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No products scanned or invalid quantity')),
+        SnackBar(content: Text('No products scanned')),
       );
       return;
     }
 
     for (var product in _scannedProducts) {
-      if (quantity > product.quantity) {
+      final quantity = _productQuantities[product.id!] ?? 0;
+      if (quantity <= 0 || quantity > product.quantity) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Insufficient quantity for ${product.name}')),
+          SnackBar(content: Text('Invalid quantity for ${product.name}')),
         );
         return;
       }
@@ -128,9 +131,9 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
       ));
     }
 
-    _quantityController.clear();
     setState(() {
       _scannedProducts.clear();
+      _productQuantities.clear();
       _totalPrice = 0.0;
     });
 
@@ -154,26 +157,36 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
               child: const Text('Select Image and Scan Barcode'),
             ),
             const SizedBox(height: 20),
-Expanded(
-  child: ListView.builder(
-    itemCount: _scannedProducts.length,
-    itemBuilder: (context, index) {
-      final product = _scannedProducts[index];
-      return ListTile(
-        title: Text(product.name ?? 'Unknown Product'), // Handle null for name
-        subtitle: Text('Price: ${product.price.toStringAsFixed(2)} THB'), // Handle price formatting
-      );
-    },
-  ),
-),
-            TextField(
-              controller: _quantityController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Quantity',
+            Expanded(
+              child: ListView.builder(
+                itemCount: _scannedProducts.length,
+                itemBuilder: (context, index) {
+                  final product = _scannedProducts[index];
+                  final quantity = _productQuantities[product.id!] ?? 1;
+                  return ListTile(
+                    title: Text(product.name ?? 'Unknown Product'),
+                    subtitle: Text('Price: ${product.price.toStringAsFixed(2)} THB'),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: TextField(
+                        controller: TextEditingController(text: quantity.toString()),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Quantity',
+                        ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          final newQuantity = int.tryParse(value) ?? 1;
+                          setState(() {
+                            _productQuantities[product.id!] = newQuantity;
+                            _calculateTotalPrice();
+                          });
+                        },
+                      ),
+                    ),
+                  );
+                },
               ),
-              keyboardType: TextInputType.number,
-              onChanged: (_) => _calculateTotalPrice(),
             ),
             const SizedBox(height: 20),
             Text('Total Price: ${_totalPrice.toStringAsFixed(2)} THB'),
