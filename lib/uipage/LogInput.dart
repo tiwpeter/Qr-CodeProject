@@ -20,7 +20,7 @@ class MyFlexLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: kToolbarHeight), // ปรับให้ช่องว่างด้านบนตามความสูงของ AppBar
+      padding: EdgeInsets.only(top: 5), // ปรับให้ช่องว่างด้านบนตามความสูงของ AppBar
       child: Column(
         children: [
           // กล่องแรก
