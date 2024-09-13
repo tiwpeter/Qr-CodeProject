@@ -7,13 +7,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Color(0xFFC7253E), // ตั้งค่าสีพื้นหลังของ AppBar เป็นสีแดง
       title: Text(
         'Ubg shop',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white), // ตั้งค่าสีข้อความเป็นสีขาว
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.search),
+          icon: Icon(Icons.search, color: Colors.white), // ตั้งค่าสีของไอคอนเป็นสีขาว
           onPressed: () {
             showDialog(
               context: context,
@@ -23,6 +24,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   content: TextField(
                     decoration: InputDecoration(
                       hintText: 'Enter your search query',
+                      hintStyle: TextStyle(color: Colors.black), // ตั้งค่าสีของข้อความ placeholder
                     ),
                     onChanged: (value) {
                       // Handle text input here if needed
@@ -30,13 +32,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Cancel'),
+                      child: Text('Cancel', style: TextStyle(color: Colors.red)), // ตั้งค่าสีข้อความเป็นสีแดง
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Search'),
+                      child: Text('Search', style: TextStyle(color: Colors.red)), // ตั้งค่าสีข้อความเป็นสีแดง
                       onPressed: () {
                         // Handle the search action here
                         Navigator.of(context).pop();
@@ -53,10 +55,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Text(
               'All',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white), // ตั้งค่าสีข้อความเป็นสีขาว
             ),
             SizedBox(width: 8),
-            Image.asset('assets/images/menu_11.png', width: 24, height: 24),
+            Image.asset('assets/images/menu_11.png', width: 24, height: 24), // ปรับขนาดของภาพ
           ],
         ),
         SizedBox(width: 10),
