@@ -7,7 +7,7 @@ import 'package:poject_qr/pages/qrcode.dart';
 import 'package:poject_qr/pages/sales_screen.dart';
 import 'package:poject_qr/pages/todo.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 import 'package:poject_qr/pagesTest/Test.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
-import 'package:poject_qr/uipage/certTest1.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
+import 'package:poject_qr/uipage/LogInput.dart';  // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
 void main() => runApp(MyApp());
 
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     MyPageQr2(),
     BarcodeScannerScreen(result: 'InitialResult'), // Provide a default result
     Todo(),
-    CertTest(),
+    LogInput(),
   ];
 
   @override
