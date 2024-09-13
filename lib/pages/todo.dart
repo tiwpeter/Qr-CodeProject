@@ -111,42 +111,86 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               leading: todo.imagePath != null
                   ? Image.file(
                       File(todo.imagePath!),
-                      width: 24, // Set the width of the image
-                      height: 24, // Set the height of the image
+                      width:85, // Set the width of the image
+                      height: 70, // Set the height of the image
                       fit: BoxFit.cover, // Fit the image within the specified width and height
                     )
                   : SizedBox.shrink(), // Hide if no imagePath
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              title: Row(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      todo.task,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                  // Column with task, price, and quantity
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            todo.task,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'ราคา: ${todo.price}', // Display price label and value
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'จำนวน: ${todo.quantity}', // Display quantity label and value
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  // New container with three boxes: image, text 'บาท', and text 'จำนวน'
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      'ราคา: ${todo.price}', // Display price label and value
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text(
-                      'จำนวน: ${todo.quantity}', // Display quantity label and value
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[700],
-                      ),
+                    width: 100, // Adjust the width as needed
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Image.asset(
+                            'assets/images/configuration_1.png', // Replace with your image path
+                            width: 24,
+                            height: 24,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'บาท',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          child: Text(
+                            'จำนวน',
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
