@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/widgets/HomeAppBar.dart';
+// home app bar = Nav
+// Homepage = use this
+
 
 class Homepage extends StatelessWidget {
   @override

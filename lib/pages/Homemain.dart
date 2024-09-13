@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/pages/Homepage.dart';
 
+//  Homepage = detail + nav
+//Homemain = detail
+
 class Homemain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

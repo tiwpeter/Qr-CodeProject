@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/widgets/HomeAppBar.dart'; // ตรวจสอบให้แน่ใจว่าเส้นทางของ HomeAppBar ถูกต้อง
 
 void main() {
   runApp(LogInput());
@@ -9,8 +10,73 @@ class LogInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Flex Layout Example')),
+        appBar: HomeAppBar(),
         body: MyFlexLayout(),
+      ),
+    );
+  }
+}
+
+class InfoContainer extends StatelessWidget {
+  final String image;
+  final String textA;
+  final String textB;
+  final String text10;
+
+  InfoContainer({
+    required this.image,
+    required this.textA,
+    required this.textB,
+    required this.text10,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color.fromARGB(255, 165, 165, 165),
+      width: double.infinity, // ใช้ double.infinity เพื่อให้ขยายเต็มความกว้างของพื้นที่
+      height: 90,
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(width: 10),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Image.asset(
+              image,
+              height: 70,
+            ),
+          ),
+          SizedBox(width: 10),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(textA, style: TextStyle(fontSize: 18, color: Colors.white)),
+                Text(textB, style: TextStyle(fontSize: 18, color: Colors.white)),
+              ],
+            ),
+          ),
+          SizedBox(width: 10),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(text10, style: TextStyle(fontSize: 18, color: Colors.white)),
+                SizedBox(width: 10),
+                Image.asset(
+                  'assets/images/configuration_1.png',
+                  height: 28,
+                ),
+                SizedBox(width: 10),
+                Text(text10, style: TextStyle(fontSize: 18, color: Colors.white)),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -23,106 +89,18 @@ class MyFlexLayout extends StatelessWidget {
       padding: EdgeInsets.only(top: 5), // ปรับให้ช่องว่างด้านบนตามความสูงของ AppBar
       child: Column(
         children: [
-          // กล่องแรก
-          Container(
-            color: const Color.fromARGB(255, 165, 165, 165), // สีพื้นหลังของกล่อง
-            width: 500, // ความกว้างของกล่อง
-            height: 90, // ความสูงของกล่อง
-            padding: EdgeInsets.all(8.0), // ระยะห่างภายใน
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 10), // ระยะห่างระหว่างกล่อง
-                // กล่องที่มีภาพ
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/images/input_1.png',
-                    height: 70, // กำหนดความสูงของภาพ
-                  ),
-                ),
-                // กล่องที่มีข้อความ A และ B เรียงกันในแนวนอน
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('A', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
-                      Text('9/6/2024', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
-                    ],
-                  ),
-                ),
-                SizedBox(width: 10), // ระยะห่างระหว่างกล่อง
-                // กล่องที่มีข้อความ 10 และ 10 เรียงกันในแนวนอน
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
-                      SizedBox(width: 10), // ระยะห่างระหว่างข้อความ 10
-                      Image.asset(
-                        'assets/images/configuration_1.png',
-                        height: 28, // กำหนดความสูงของภาพ
-                      ),
-                      SizedBox(width: 10), // ระยะห่างระหว่างภาพและข้อความ 10
-                      Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          InfoContainer(
+            image: 'assets/images/input_1.png',
+            textA: 'A',
+            textB: '9/6/2024',
+            text10: '10',
           ),
-          SizedBox(height: 10), // ระยะห่างระหว่างกล่อง
-          // กล่องใหม่
-          Container(
-            color: const Color.fromARGB(255, 165, 165, 165), // สีพื้นหลังของกล่อง
-            width: 500, // ความกว้างของกล่อง
-            height: 90, // ความสูงของกล่อง
-            padding: EdgeInsets.all(8.0), // ระยะห่างภายใน
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(width: 10), // ระยะห่างระหว่างกล่อง
-                // กล่องที่มีภาพ
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/images/input_1.png',
-                    height: 70, // กำหนดความสูงของภาพ
-                  ),
-                ),
-                // กล่องที่มีข้อความ A และ B เรียงกันในแนวนอน
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('A', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
-                      Text('9/6/2024', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
-                    ],
-                  ),
-                ),
-                SizedBox(width: 10), // ระยะห่างระหว่างกล่อง
-                // กล่องที่มีข้อความ 10 และ 10 เรียงกันในแนวนอน
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
-                      SizedBox(width: 10), // ระยะห่างระหว่างข้อความ 10
-                      Image.asset(
-                        'assets/images/configuration_1.png',
-                        height: 28, // กำหนดความสูงของภาพ
-                      ),
-                      SizedBox(width: 10), // ระยะห่างระหว่างภาพและข้อความ 10
-                      Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          SizedBox(height: 10),
+          InfoContainer(
+            image: 'assets/images/input_1.png',
+            textA: 'A',
+            textB: '9/6/2024',
+            text10: '10',
           ),
         ],
       ),
