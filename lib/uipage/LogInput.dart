@@ -21,9 +21,9 @@ class MyFlexLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        color: Colors.grey[800], // สีพื้นหลังขาวเข้ม
+        color: const Color.fromARGB(255, 165, 165, 165), // สีพื้นหลังขาวเข้ม
         width: 500, // เพิ่มความกว้างของกล่องหลัก
-        height: 100, // เพิ่มความสูงของกล่องหลัก
+        height: 90, // เพิ่มความสูงของกล่องหลัก
         padding: EdgeInsets.all(8.0), // ระยะห่างภายใน
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class MyFlexLayout extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('A', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
-                  Text('B', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
+                  Text('9/6/2024', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
                 ],
               ),
             ),
@@ -55,9 +55,14 @@ class MyFlexLayout extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('10', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
+                  Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
                   SizedBox(width: 10), // ระยะห่างระหว่างข้อความ 10
-                  Text('10', style: TextStyle(fontSize: 18, color: Colors.white)), // ขนาดข้อความ
+                  Image.asset(
+                    'assets/images/configuration_1.png',
+                    height: 28, // กำหนดความสูงของภาพ
+                  ),
+                  SizedBox(width: 10), // ระยะห่างระหว่างภาพและข้อความ 10
+                  Text('10', style: TextStyle(fontSize: 18, color: Colors.white)),
                 ],
               ),
             ),
