@@ -1,0 +1,57 @@
+name: poject_qr
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^1.0.0
+  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.1.2
+  google_ml_kit: ^0.18.0
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  barcode_scan2: ^4.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/icon.png
+    - assets/images/input_1.png
+    - assets/images/menu_11.png
+    - assets/images/input_11.png
+    - assets/images/configuration_1.png
+    - assets/images/stock_1.png
+    - assets/images/stock_11.png
+    - assets/images/delete_1.png
+    - assets/images/add_11.png
+    - assets/images/loupe_1.png
+    - assets/images/up_selling_1.png
+    - assets/images/add_1.png
+    - assets/images/play_21.png
+    - assets/images/up_arrow_1.png
+    - assets/images/play_31.png
+    - assets/images/camera_1.png
+    - assets/images/gallery_11.png
+    - assets/images/qrcode.png
+    - assets/images/revenue.png
+    - assets/icon/add.png
+    - assets/icon/loupe.png
+    - assets/icon/up-selling.png
+    - assets/images/add_11.png
+    - assets/images/delete_1.png
+    - assets/images/configuration_1.png
+
+
+    
