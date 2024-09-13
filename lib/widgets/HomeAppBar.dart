@@ -9,7 +9,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Color(0xFFC7253E), // ตั้งค่าสีพื้นหลังของ AppBar เป็นสีแดง
       title: Text(
-        'Ubg shop',
+        'LogInput',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white), // ตั้งค่าสีข้อความเป็นสีขาว
       ),
       actions: [

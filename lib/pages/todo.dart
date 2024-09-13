@@ -13,7 +13,7 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ToDo App',
+      title: 'Stock',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -84,7 +84,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ToDo List'),
+        title: Text('Stock'),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
