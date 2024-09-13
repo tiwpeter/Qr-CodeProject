@@ -139,6 +139,16 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                       ),
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      'จำนวน: ${todo.quantity}', // Display quantity label and value
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ),
                 ],
               ),
               onLongPress: () => _deleteToDo(todo.id!),
