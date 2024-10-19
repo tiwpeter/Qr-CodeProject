@@ -146,7 +146,11 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: Padding(
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[50], // Background color
+          border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -176,7 +180,7 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
                       ],
                     ),
                     margin: const EdgeInsets.symmetric(
-                        vertical: 8), // ระยะห่างระหว่างรายการ
+                        vertical: 8), // Spacing between items
                     child: ListTile(
                       leading: product.imagePath != null
                           ? Image.file(
@@ -225,12 +229,30 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
                 },
               ),
             ),
-            const SizedBox(height: 20),
-            Text('Total Price: ${_totalPrice.toStringAsFixed(2)} THB'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _recordSale,
-              child: const Text('Sell'),
+            // const SizedBox(height: 20),
+            Container(
+              width: double.infinity, // ขยายเต็มความกว้าง
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: Colors.grey, width: 1), // สีและความหนาของกรอบ
+                borderRadius:
+                    BorderRadius.circular(16), // ปรับรัศมีของมุมให้โค้ง
+                color: Colors.white, // สีพื้นหลัง
+              ),
+              padding: const EdgeInsets.all(16), // ระยะห่างภายใน
+              child: Column(
+                children: [
+                  Text(
+                    'Total Price: ${_totalPrice.toStringAsFixed(2)} THB',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _recordSale,
+                    child: const Text('Sell'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
