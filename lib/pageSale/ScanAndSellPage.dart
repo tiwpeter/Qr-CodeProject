@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../db/database_helper.dart';
 import '../models/sale.dart';
 import '../models/todo.dart';
+import 'dart:io';
 
 class ScanAndSellPage extends StatefulWidget {
   final String result;
@@ -16,10 +17,8 @@ class ScanAndSellPage extends StatefulWidget {
 
 class _ScanAndSellPageState extends State<ScanAndSellPage> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
-  final TextEditingController _quantityController = TextEditingController();
-
   final List<ToDo> _scannedProducts = [];
-  final Map<int, int> _productQuantities = {}; // Track quantities for each product
+  final Map<int, int> _productQuantities = {};
   double _totalPrice = 0.0;
 
   @override
@@ -69,10 +68,9 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
     final product = await _dbHelper.getTodoByBarcode(barcode);
     if (product != null) {
       setState(() {
-        // Avoid duplicate products in the list
         if (!_scannedProducts.contains(product)) {
           _scannedProducts.add(product);
-          _productQuantities[product.id!] = 1; // Initialize quantity for each product
+          _productQuantities[product.id!] = 1; // Initialize quantity
         }
         _calculateTotalPrice();
       });
@@ -146,7 +144,7 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan and Sell'),
+        title: const Text('Cart'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -162,26 +160,65 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
                 itemCount: _scannedProducts.length,
                 itemBuilder: (context, index) {
                   final product = _scannedProducts[index];
-                  final quantity = _productQuantities[product.id!] ?? 1;
-                  return ListTile(
-                    title: Text(product.name ?? 'Unknown Product'),
-                    subtitle: Text('Price: ${product.price.toStringAsFixed(2)} THB'),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: TextField(
-                        controller: TextEditingController(text: quantity.toString()),
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Quantity',
+                  final quantity = _productQuantities[product.id!] ?? 0;
+
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Background color of the container
+                      borderRadius:
+                          BorderRadius.circular(12.0), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1), // Shadow color
+                          blurRadius: 4.0, // Shadow blur radius
+                          offset: Offset(0, 2), // Shadow position
                         ),
-                        keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          final newQuantity = int.tryParse(value) ?? 1;
-                          setState(() {
-                            _productQuantities[product.id!] = newQuantity;
-                            _calculateTotalPrice();
-                          });
-                        },
+                      ],
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8), // ระยะห่างระหว่างรายการ
+                    child: ListTile(
+                      leading: product.imagePath != null
+                          ? Image.file(
+                              File(product.imagePath!),
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            )
+                          : SizedBox.shrink(),
+                      title: Text(product.name ?? 'Unknown Product'),
+                      subtitle: Text(
+                          'Price: ${product.price.toStringAsFixed(2)} THB'),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  if (quantity > 1) {
+                                    _productQuantities[product.id!] =
+                                        quantity - 1;
+                                    _calculateTotalPrice();
+                                  }
+                                });
+                              },
+                            ),
+                            Text('$quantity', style: TextStyle(fontSize: 16)),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  _productQuantities[product.id!] =
+                                      quantity + 1;
+                                  _calculateTotalPrice();
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

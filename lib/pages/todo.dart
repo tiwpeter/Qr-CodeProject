@@ -1,3 +1,5 @@
+// ui stock breck
+// use with ui sell
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../pages/qrcode.dart'; // Assuming this is where BarcodeScannerScreen is defined
@@ -48,13 +50,16 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
 
   // Add a new ToDo item by scanning a barcode
   void _addToDo() async {
-    final result = await scanBarcode(); // Implement this method to get actual result
+    final result =
+        await scanBarcode(); // Implement this method to get actual result
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => BarcodeScannerScreen(result: result),
-      ),
-    ).then((_) => _loadTodos()); // Reload todos on return
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (context) => BarcodeScannerScreen(result: result),
+          ),
+        )
+        .then((_) => _loadTodos()); // Reload todos on return
   }
 
   // Mock method for barcode scanning; replace with actual implementation
@@ -107,95 +112,113 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           itemCount: _todos.length,
           itemBuilder: (context, index) {
             final todo = _todos[index];
-            return ListTile(
-              leading: todo.imagePath != null
-                  ? Image.file(
-                      File(todo.imagePath!),
-                      width:85, // Set the width of the image
-                      height: 70, // Set the height of the image
-                      fit: BoxFit.cover, // Fit the image within the specified width and height
-                    )
-                  : SizedBox.shrink(), // Hide if no imagePath
-              title: Row(
-                children: [
-                  // Column with task, price, and quantity
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Text(
-                            todo.task,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Text(
-                            'ราคา: ${todo.price}', // Display price label and value
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Text(
-                            'จำนวน: ${todo.quantity}', // Display quantity label and value
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // New container with three boxes: image, text 'บาท', and text 'จำนวน'
-                  Container(
-                    width: 100, // Adjust the width as needed
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Image.asset(
-                            'assets/images/configuration_1.png', // Replace with your image path
-                            width: 24,
-                            height: 24,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Text(
-                            'บาท',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
-                          child: Text(
-                            'จำนวน',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color of the container
+                borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    blurRadius: 4.0, // Shadow blur radius
+                    offset: Offset(0, 2), // Shadow position
                   ),
                 ],
               ),
-              onLongPress: () => _deleteToDo(todo.id!),
+              margin: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 16.0), // Margin around the container
+              child: ListTile(
+                leading: todo.imagePath != null
+                    ? Image.file(
+                        File(todo.imagePath!),
+                        width: 85, // Set the width of the image
+                        height: 70, // Set the height of the image
+                        fit: BoxFit
+                            .cover, // Fit the image within the specified width and height
+                      )
+                    : SizedBox.shrink(), // Hide if no imagePath
+                title: Row(
+                  children: [
+                    // Column with task, price, and quantity
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              todo.task,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              'ราคา: ${todo.price}', // Display price label and value
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // Aligns children to the start
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Image.asset(
+                              'assets/images/configuration_1.png', // Replace with your image path
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .start, // Aligns children to the start
+                              children: [
+                                SizedBox(
+                                    width: 8), // Space between text and buttons
+                                IconButton(
+                                  icon: Icon(Icons.remove), // Decrease button
+                                  onPressed: () {
+                                    // Add your decrease logic here
+                                  },
+                                ),
+                                Text(
+                                  '${todo.quantity}', // Display quantity value
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.add), // Increase button
+                                  onPressed: () {
+                                    // Add your increase logic here
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                onLongPress: () => _deleteToDo(todo.id!),
+              ),
             );
           },
         ),
