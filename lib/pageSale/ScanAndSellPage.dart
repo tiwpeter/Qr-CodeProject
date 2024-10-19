@@ -151,7 +151,6 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
           color: Colors.blueGrey[50], // Background color
           border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
         ),
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             ElevatedButton(
@@ -160,76 +159,80 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: _scannedProducts.length,
-                itemBuilder: (context, index) {
-                  final product = _scannedProducts[index];
-                  final quantity = _productQuantities[product.id!] ?? 0;
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: _scannedProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = _scannedProducts[index];
+                    final quantity = _productQuantities[product.id!] ?? 0;
 
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the container
-                      borderRadius:
-                          BorderRadius.circular(12.0), // Rounded corners
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1), // Shadow color
-                          blurRadius: 4.0, // Shadow blur radius
-                          offset: Offset(0, 2), // Shadow position
-                        ),
-                      ],
-                    ),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8), // Spacing between items
-                    child: ListTile(
-                      leading: product.imagePath != null
-                          ? Image.file(
-                              File(product.imagePath!),
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            )
-                          : SizedBox.shrink(),
-                      title: Text(product.name ?? 'Unknown Product'),
-                      subtitle: Text(
-                          'Price: ${product.price.toStringAsFixed(2)} THB'),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                                setState(() {
-                                  if (quantity > 1) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color:
+                            Colors.white, // Background color of the container
+                        borderRadius:
+                            BorderRadius.circular(12.0), // Rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color:
+                                Colors.black.withOpacity(0.1), // Shadow color
+                            blurRadius: 4.0, // Shadow blur radius
+                            offset: Offset(0, 2), // Shadow position
+                          ),
+                        ],
+                      ),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8), // Spacing between items
+                      child: ListTile(
+                        leading: product.imagePath != null
+                            ? Image.file(
+                                File(product.imagePath!),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              )
+                            : SizedBox.shrink(),
+                        title: Text(product.name ?? 'Unknown Product'),
+                        subtitle: Text(
+                            'Price: ${product.price.toStringAsFixed(2)} THB'),
+                        trailing: SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  setState(() {
+                                    if (quantity > 1) {
+                                      _productQuantities[product.id!] =
+                                          quantity - 1;
+                                      _calculateTotalPrice();
+                                    }
+                                  });
+                                },
+                              ),
+                              Text('$quantity', style: TextStyle(fontSize: 16)),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  setState(() {
                                     _productQuantities[product.id!] =
-                                        quantity - 1;
+                                        quantity + 1;
                                     _calculateTotalPrice();
-                                  }
-                                });
-                              },
-                            ),
-                            Text('$quantity', style: TextStyle(fontSize: 16)),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  _productQuantities[product.id!] =
-                                      quantity + 1;
-                                  _calculateTotalPrice();
-                                });
-                              },
-                            ),
-                          ],
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-            // const SizedBox(height: 20),
             Container(
               width: double.infinity, // ขยายเต็มความกว้าง
               decoration: BoxDecoration(
