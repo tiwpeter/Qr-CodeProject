@@ -234,25 +234,49 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
               ),
             ),
             Container(
-              width: double.infinity, // ขยายเต็มความกว้าง
+              width: double.infinity, // Expand to full width
               decoration: BoxDecoration(
                 border: Border.all(
-                    color: Colors.grey, width: 1), // สีและความหนาของกรอบ
-                borderRadius:
-                    BorderRadius.circular(16), // ปรับรัศมีของมุมให้โค้ง
-                color: Colors.white, // สีพื้นหลัง
+                    color: Colors.grey, width: 1), // Border color and width
+                borderRadius: BorderRadius.circular(16), // Rounded corners
+                color: Colors.white, // Background color
               ),
-              padding: const EdgeInsets.all(16), // ระยะห่างภายใน
+              padding: const EdgeInsets.all(16), // Internal padding
               child: Column(
                 children: [
-                  Text(
-                    'Total Price: ${_totalPrice.toStringAsFixed(2)} THB',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .spaceBetween, // Space between to push items to edges
+                    children: [
+                      Text(
+                        'ราคารวม ',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${_totalPrice.toStringAsFixed(2)} THB',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _recordSale,
-                    child: const Text('Sell'),
+                  SizedBox(
+                    width: 200, // Button width
+                    child: ElevatedButton(
+                      onPressed: _recordSale,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.green, // Updated to backgroundColor
+                      ),
+                      child: const Text(
+                        'ชำระเงิน',
+                        style: TextStyle(color: Colors.white), // Text color
+                      ),
+                    ),
                   ),
                 ],
               ),
