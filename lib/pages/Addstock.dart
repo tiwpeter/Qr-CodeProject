@@ -17,6 +17,10 @@ class _AddStockState extends State<AddStock> {
   final ImagePicker _picker = ImagePicker();
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _purchasePriceController =
+      TextEditingController();
+  final TextEditingController _salePriceController = TextEditingController();
 
   int _quantity = 0;
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
@@ -47,7 +51,7 @@ class _AddStockState extends State<AddStock> {
       barcode: _barcode!,
       imagePath: _image?.path,
       name: _nameController.text,
-      price: 0.0, // ปรับตามต้องการ
+      price: double.tryParse(_salePriceController.text) ?? 0.0, // ใช้ราคาขาย
       quantity: _quantity,
     );
 
@@ -81,6 +85,7 @@ class _AddStockState extends State<AddStock> {
                 const SizedBox(width: 20),
                 Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextField(
                         controller: _nameController,
@@ -90,6 +95,8 @@ class _AddStockState extends State<AddStock> {
                         ),
                         maxLines: 1,
                       ),
+                      const SizedBox(height: 10), // เพิ่มระยะห่าง
+
                       const SizedBox(height: 10), // เพิ่มระยะห่าง
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,12 +134,55 @@ class _AddStockState extends State<AddStock> {
               ],
             ),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Barcode: $_scanResult',
-                style: const TextStyle(fontSize: 16),
-              ),
+            Column(
+              children: [
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Barcode: $_scanResult',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                TextField(
+                  controller: _categoryController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Category',
+                  ),
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _purchasePriceController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'ราคาซื้อ',
+                        ),
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        maxLines: 1,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: _salePriceController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'ราคาขาย',
+                        ),
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        maxLines: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             ElevatedButton(
               onPressed: _saveToDoItem,
