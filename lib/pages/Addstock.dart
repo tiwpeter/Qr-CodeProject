@@ -21,6 +21,8 @@ class _AddStockState extends State<AddStock> {
   final TextEditingController _purchasePriceController =
       TextEditingController();
   final TextEditingController _salePriceController = TextEditingController();
+  final TextEditingController _detailController =
+      TextEditingController(); // เพิ่ม Controller สำหรับ Detail
 
   int _quantity = 0;
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
@@ -53,6 +55,7 @@ class _AddStockState extends State<AddStock> {
       name: _nameController.text,
       price: double.tryParse(_salePriceController.text) ?? 0.0, // ใช้ราคาขาย
       quantity: _quantity,
+      // detail: _detailController.text, // เพิ่ม Detail
     );
 
     await _dbHelper.insertToDo(todo);
@@ -96,8 +99,6 @@ class _AddStockState extends State<AddStock> {
                         maxLines: 1,
                       ),
                       const SizedBox(height: 10), // เพิ่มระยะห่าง
-
-                      const SizedBox(height: 10), // เพิ่มระยะห่าง
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -136,7 +137,6 @@ class _AddStockState extends State<AddStock> {
             const SizedBox(height: 20),
             Column(
               children: [
-                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -182,8 +182,18 @@ class _AddStockState extends State<AddStock> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _detailController, // ใช้ Controller สำหรับ Detail
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'รายละเอียด',
+                  ),
+                  maxLines: 3, // ให้สามารถพิมพ์หลายบรรทัด
+                ),
               ],
             ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveToDoItem,
               child: const Text('บันทึกสินค้า'),
