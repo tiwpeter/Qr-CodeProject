@@ -1,0 +1,228 @@
+// ui stock breck
+// use with ui sell
+import 'package:flutter/material.dart';
+import 'dart:io';
+import '../pages/qrcode.dart'; // Assuming this is where BarcodeScannerScreen is defined
+import '../db/database_helper.dart';
+import '../models/todo.dart';
+import 'BarCodeSale.dart'; // Import BarCodeSale instead of SalesScreen
+
+// Main function to run the app
+void main() => runApp(TodoApp());
+
+// TodoApp widget that sets up the theme and home screen
+class TodoApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Stock',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ToDoListScreen(),
+    );
+  }
+}
+
+// Stateful widget for the ToDo List screen
+class ToDoListScreen extends StatefulWidget {
+  @override
+  _ToDoListScreenState createState() => _ToDoListScreenState();
+}
+
+class _ToDoListScreenState extends State<ToDoListScreen> {
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<ToDo> _todos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTodos();
+  }
+
+  // Load todos from the database
+  void _loadTodos() async {
+    final todos = await _dbHelper.todos();
+    setState(() {
+      _todos = todos;
+    });
+  }
+
+  // Add a new ToDo item by scanning a barcode
+  void _addToDo() async {
+    final result =
+        await scanBarcode(); // Implement this method to get actual result
+
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (context) => BarcodeScannerScreen(result: result),
+          ),
+        )
+        .then((_) => _loadTodos()); // Reload todos on return
+  }
+
+  // Mock method for barcode scanning; replace with actual implementation
+  Future<String> scanBarcode() async {
+    // Implement your barcode scanning logic here
+    // Return a sample result for now
+    return 'SampleBarcodeResult'; // Replace with actual scanned result
+  }
+
+  // Navigate to the BarCodeSale screen
+  void _navigateToSalesScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BarCodeSale(), // Updated to BarCodeSale
+      ),
+    );
+  }
+
+  // Delete a ToDo item by its ID
+  void _deleteToDo(int id) async {
+    await _dbHelper.deleteToDo(id);
+    _loadTodos();
+  }
+
+  // Build the UI for the ToDo List screen
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Stock'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: _addToDo,
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: _navigateToSalesScreen,
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.blueGrey[50], // Background color
+          border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
+        ),
+        width: double.infinity,
+        padding: EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: _todos.length,
+          itemBuilder: (context, index) {
+            final todo = _todos[index];
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color of the container
+                borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Shadow color
+                    blurRadius: 4.0, // Shadow blur radius
+                    offset: Offset(0, 2), // Shadow position
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 16.0), // Margin around the container
+              child: ListTile(
+                leading: todo.imagePath != null
+                    ? Image.file(
+                        File(todo.imagePath!),
+                        width: 85, // Set the width of the image
+                        height: 70, // Set the height of the image
+                        fit: BoxFit
+                            .cover, // Fit the image within the specified width and height
+                      )
+                    : SizedBox.shrink(), // Hide if no imagePath
+                title: Row(
+                  children: [
+                    // Column with task, price, and quantity
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              todo.task,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              'ราคา: ${todo.price}', // Display price label and value
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // Aligns children to the start
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Image.asset(
+                              'assets/images/configuration_1.png', // Replace with your image path
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .start, // Aligns children to the start
+                              children: [
+                                SizedBox(
+                                    width: 8), // Space between text and buttons
+                                IconButton(
+                                  icon: Icon(Icons.remove), // Decrease button
+                                  onPressed: () {
+                                    // Add your decrease logic here
+                                  },
+                                ),
+                                Text(
+                                  '${todo.quantity}', // Display quantity value
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.add), // Increase button
+                                  onPressed: () {
+                                    // Add your increase logic here
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                onLongPress: () => _deleteToDo(todo.id!),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
