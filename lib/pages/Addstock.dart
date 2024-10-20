@@ -17,8 +17,6 @@ class _AddStockState extends State<AddStock> {
   final ImagePicker _picker = ImagePicker();
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _quantityController = TextEditingController();
 
   int _quantity = 0;
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
@@ -49,8 +47,8 @@ class _AddStockState extends State<AddStock> {
       barcode: _barcode!,
       imagePath: _image?.path,
       name: _nameController.text,
-      price: double.tryParse(_priceController.text) ?? 0.0,
-      quantity: int.tryParse(_quantityController.text) ?? 1,
+      price: 0.0, // ปรับตามต้องการ
+      quantity: _quantity,
     );
 
     await _dbHelper.insertToDo(todo);
@@ -72,16 +70,14 @@ class _AddStockState extends State<AddStock> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _image != null
-                    ? Image.file(
-                        _image!,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      )
-                    : const SizedBox.shrink(),
+                if (_image != null)
+                  Image.file(
+                    _image!,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
                 const SizedBox(width: 20),
                 Expanded(
                   child: Column(
@@ -94,13 +90,15 @@ class _AddStockState extends State<AddStock> {
                         ),
                         maxLines: 1,
                       ),
+                      const SizedBox(height: 10), // เพิ่มระยะห่าง
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.image),
+                          ElevatedButton(
                             onPressed: _pickImage,
+                            child: const Text('เลือกรูปภาพ'),
                           ),
-                          Column(
+                          Row(
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.remove),
