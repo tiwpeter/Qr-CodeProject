@@ -102,9 +102,30 @@ class _AddStockState extends State<AddStock> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ElevatedButton(
-                            onPressed: _pickImage,
-                            child: const Text('เลือกรูปภาพ'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment
+                                .center, // Center the items vertically (optional)
+                            children: [
+                              GestureDetector(
+                                onTap: _pickImage, // Function to pick an image
+                                child: Image.asset(
+                                  'assets/images/camera_1.png',
+                                  height: 24, // Adjust size as needed
+                                  width: 24,
+                                ),
+                              ),
+                              SizedBox(
+                                  height:
+                                      16), // Space between the two images (optional)
+                              GestureDetector(
+                                onTap: _pickImage, // Function to pick an image
+                                child: Image.asset(
+                                  'assets/images/camera_1.png',
+                                  height: 24, // Adjust size as needed
+                                  width: 24,
+                                ),
+                              ),
+                            ],
                           ),
                           Row(
                             children: [
