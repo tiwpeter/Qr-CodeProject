@@ -81,7 +81,7 @@ class ScannedProductsPage extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: const Color.fromARGB(255, 31, 31, 31),
                         ),
                       ),
                       Text(

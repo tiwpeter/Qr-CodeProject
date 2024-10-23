@@ -114,115 +114,152 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       ),
       body: Container(
         width: double.infinity,
-        child: ListView.builder(
-          itemCount: _todos.length,
-          itemBuilder: (context, index) {
-            final todo = _todos[index];
-            return Container(
-              child: ListTile(
-                leading: todo.imagePath != null
-                    ? Image.file(
-                        File(todo.imagePath!),
-                        width: 85,
-                        height: 70,
-                        fit: BoxFit.cover,
-                      )
-                    : SizedBox.shrink(),
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 2.0),
-                            child: Text(
-                              todo.task,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 2.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/icon/arrowY.png',
-                                      width: 16,
-                                      height: 16,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            4), // เพิ่มระยะห่างระหว่างรูปกับตัวเลข
-                                    Text(
-                                      '100', // เปลี่ยนเป็นตัวเลขที่ต้องการแสดง
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                  width:
-                                      16), // เพิ่มระยะห่างระหว่างกลุ่มแรกกับกลุ่มที่สอง
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 2.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/icon/arrowxX.png',
-                                      width: 16,
-                                      height: 16,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            4), // เพิ่มระยะห่างระหว่างรูปกับตัวเลข
-                                    Text(
-                                      '200', // เปลี่ยนเป็นตัวเลขที่ต้องการแสดง
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 2.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 2.0),
-                            child: Image.asset(
-                              'assets/icon/right.png',
-                              width: 16,
-                              height: 16,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+        child: Column(
+          children: [
+            Container(
+              color: Colors.red,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                'Your Header Text',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                onLongPress: () => _deleteToDo(todo.id!),
               ),
-            );
-          },
+            ),
+            Container(
+              color: Colors.blue, // Set the background color as needed
+              height: 40, // Set the desired height
+              alignment: Alignment.center,
+              child: Text(
+                'Product List',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _todos.length,
+                itemBuilder: (context, index) {
+                  final todo = _todos[index];
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 12.0), // Adjust padding
+                    child: ListTile(
+                      leading: todo.imagePath != null
+                          ? Image.file(
+                              File(todo.imagePath!),
+                              width: 85,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            )
+                          : SizedBox.shrink(),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          4.0), // Increased vertical padding
+                                  child: Text(
+                                    todo.task,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              4.0), // Increased vertical padding
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/icon/arrowY.png',
+                                            width: 16,
+                                            height: 16,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            '100',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 16),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              4.0), // Increased vertical padding
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/icon/arrowxX.png',
+                                            width: 16,
+                                            height: 16,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            '200',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4.0), // Increased vertical padding
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical:
+                                          4.0), // Increased vertical padding
+                                  child: Image.asset(
+                                    'assets/icon/right.png',
+                                    width: 16,
+                                    height: 16,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      onLongPress: () => _deleteToDo(todo.id!),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
