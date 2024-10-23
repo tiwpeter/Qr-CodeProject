@@ -341,11 +341,18 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         vertical: 8.0, horizontal: 12.0), // Adjust padding
                     child: ListTile(
                       leading: todo.imagePath != null
-                          ? Image.file(
-                              File(todo.imagePath!),
+                          ? Container(
                               width: 85,
                               height: 70,
-                              fit: BoxFit.cover,
+                              decoration: BoxDecoration(
+                                color: Colors.blue, // Background color
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Rounded corners
+                                image: DecorationImage(
+                                  image: FileImage(File(todo.imagePath!)),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             )
                           : SizedBox.shrink(),
                       title: Row(
