@@ -198,6 +198,10 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(
+                                height:
+                                    4), // Space between 'Profit' and '2,350'
+
                             Text(
                               '2,350',
                               style: TextStyle(
@@ -207,6 +211,10 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                     .bold, // Add this line for bold text
                               ),
                             ),
+                            SizedBox(
+                                height:
+                                    6), // Space between 'Profit' and '2,350'
+
                             // Text 3
                             Row(
                               children: [
