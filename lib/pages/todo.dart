@@ -118,14 +118,106 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           children: [
             Container(
               color: Colors.red,
-              height: 50,
+              height: 100, // Adjust height as needed
               alignment: Alignment.center,
-              child: Text(
-                'Your Header Text',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              child: Padding(
+                padding:
+                    EdgeInsets.all(16.0), // Adjust the padding value as needed
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween, // Space them evenly
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(
+                            8.0), // Inner padding for the content
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .red[700], // Background color for the container
+                          border: Border.all(
+                              color: Colors.white,
+                              width: 2), // Border properties
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Rounded corners
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align text to the left
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Header Text 1',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Subtitle 1',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Additional Info 1',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                        width: 16), // Optional space between the two containers
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(
+                            8.0), // Inner padding for the content
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .red[700], // Background color for the container
+                          border: Border.all(
+                              color: Colors.white,
+                              width: 2), // Border properties
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Rounded corners
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align text to the left
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Profit',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '2,350',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              '+2.34%',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
