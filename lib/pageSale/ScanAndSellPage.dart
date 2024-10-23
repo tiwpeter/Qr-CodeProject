@@ -6,6 +6,7 @@ import '../models/sale.dart';
 import '../models/todo.dart';
 import 'dart:io';
 import './scanned_products_page.dart'; // เพิ่ม import นี้
+import './animated_product_popup.dart'; // เพิ่ม import สำหรับ AnimatedProductPopup
 
 class ScanAndSellPage extends StatefulWidget {
   final String result;
@@ -28,6 +29,15 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
     if (widget.result.isNotEmpty) {
       _processBarcode(widget.result);
     }
+  }
+
+  void _showProductPopup(String productName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AnimatedProductPopup(productName: productName);
+      },
+    );
   }
 
   Future<void> _pickImageAndScan() async {
@@ -83,31 +93,6 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
         SnackBar(content: Text('Product not found for this barcode')),
       );
     }
-  }
-
-  void _showProductPopup(String productName) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Product Scanned'),
-          content: Text(productName),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-
-    // ปิดป๊อปอัพอัตโนมัติหลังจาก 3 วินาที
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pop(); // ปิดป๊อปอัพ
-    });
   }
 
   void _calculateTotalPrice() {
