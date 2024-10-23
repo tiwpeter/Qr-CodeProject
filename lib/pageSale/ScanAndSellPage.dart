@@ -76,8 +76,12 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
         _calculateTotalPrice();
       });
 
-      // แสดงป๊อปอัพที่แสดงชื่อสินค้าที่ถูกสแกน
-      _showProductPopup(product.name ?? 'Unnamed Product');
+      // แสดงป๊อปอัพที่แสดงชื่อสินค้าที่ถูกสแกน พร้อมราคาและรูป
+      _showProductPopup(
+        product.name ?? 'Unnamed Product',
+        product.price,
+        product.imagePath,
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Product not found for this barcode')),
@@ -85,27 +89,43 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
     }
   }
 
-  void _showProductPopup(String productName) {
+  void _showProductPopup(String productName, double price, String? imagePath) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Product Scanned'),
-          content: Text(productName),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
+          content: Container(
+            width: 250, // กำหนดความกว้างของป๊อปอัพ
+            height: 80, // กำหนดความสูงของป๊อปอัพ
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (imagePath != null)
+                  Image.file(
+                    File(imagePath),
+                    height: 80, // ปรับขนาดรูปให้เล็กลง
+                    width: 80,
+                  ),
+                SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(productName),
+                    Text('Price: \$${price.toStringAsFixed(2)}'),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
 
-    // ปิดป๊อปอัพอัตโนมัติหลังจาก 3 วินาที
-    Future.delayed(Duration(seconds: 3), () {
+    // ปิดป๊อปอัพอัตโนมัติหลังจาก 120 วินาที
+    Future.delayed(Duration(seconds: 120), () {
       Navigator.of(context).pop(); // ปิดป๊อปอัพ
     });
   }
