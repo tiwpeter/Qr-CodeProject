@@ -149,7 +149,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               'Header Text 1',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 8,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -195,7 +195,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               'Profit',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 8,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -203,14 +203,16 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               '2,350',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 16,
+                                fontWeight: FontWeight
+                                    .bold, // Add this line for bold text
                               ),
                             ),
                             Text(
                               '+2.34%',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 8,
                               ),
                             ),
                           ],
