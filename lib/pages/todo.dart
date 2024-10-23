@@ -1,5 +1,3 @@
-// ui stock breck
-// use with ui sell
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../pages/qrcode.dart'; // Assuming this is where BarcodeScannerScreen is defined
@@ -40,12 +38,19 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     _loadTodos();
   }
 
-  // Load todos from the database
+  // Load todos from the database with error handling
   void _loadTodos() async {
-    final todos = await _dbHelper.todos();
-    setState(() {
-      _todos = todos;
-    });
+    try {
+      final todos = await _dbHelper.todos();
+      setState(() {
+        _todos = todos;
+      });
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error loading todos: $e')),
+      );
+    }
   }
 
   // Add a new ToDo item by scanning a barcode
@@ -65,7 +70,6 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   // Mock method for barcode scanning; replace with actual implementation
   Future<String> scanBarcode() async {
     // Implement your barcode scanning logic here
-    // Return a sample result for now
     return 'SampleBarcodeResult'; // Replace with actual scanned result
   }
 
@@ -80,8 +84,15 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
 
   // Delete a ToDo item by its ID
   void _deleteToDo(int id) async {
-    await _dbHelper.deleteToDo(id);
-    _loadTodos();
+    try {
+      await _dbHelper.deleteToDo(id);
+      _loadTodos();
+    } catch (e) {
+      // Handle error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error deleting todo: $e')),
+      );
+    }
   }
 
   // Build the UI for the ToDo List screen
@@ -102,50 +113,29 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueGrey[50], // Background color
-          border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
-        ),
         width: double.infinity,
-        padding: EdgeInsets.all(8.0),
         child: ListView.builder(
           itemCount: _todos.length,
           itemBuilder: (context, index) {
             final todo = _todos[index];
             return Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Background color of the container
-                borderRadius: BorderRadius.circular(12.0), // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Shadow color
-                    blurRadius: 4.0, // Shadow blur radius
-                    offset: Offset(0, 2), // Shadow position
-                  ),
-                ],
-              ),
-              margin: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 16.0), // Margin around the container
               child: ListTile(
                 leading: todo.imagePath != null
                     ? Image.file(
                         File(todo.imagePath!),
-                        width: 85, // Set the width of the image
-                        height: 70, // Set the height of the image
-                        fit: BoxFit
-                            .cover, // Fit the image within the specified width and height
+                        width: 85,
+                        height: 70,
+                        fit: BoxFit.cover,
                       )
-                    : SizedBox.shrink(), // Hide if no imagePath
+                    : SizedBox.shrink(),
                 title: Row(
                   children: [
-                    // Column with task, price, and quantity
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                             child: Text(
                               todo.task,
                               style: TextStyle(
@@ -154,48 +144,43 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
-                            child: Text(
-                              'ราคา: ${todo.price}', // Display price label and value
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[700],
+                          Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                                child: Image.asset(
+                                  'assets/icon/arrowY.png',
+                                  width: 16,
+                                  height: 16,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                                child: Image.asset(
+                                  'assets/icon/arrowxX.png',
+                                  width: 16,
+                                  height: 16,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      padding: EdgeInsets.symmetric(vertical: 2.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // Aligns children to the start
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            padding: EdgeInsets.symmetric(vertical: 2.0),
                             child: Image.asset(
-                              'assets/icon/edit.png', // Replace with your image path
+                              'assets/icon/right.png',
                               width: 16,
                               height: 16,
                               fit: BoxFit.cover,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .start, // Aligns children to the start
-                              children: [
-                                Text(
-                                  '${todo.quantity}', // Display quantity value
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[700],
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ],
