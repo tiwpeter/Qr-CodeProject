@@ -6,16 +6,16 @@ import '../models/sale.dart';
 import '../models/todo.dart';
 import 'dart:io';
 
-class ScanD extends StatefulWidget {
+class ScanAndSellPage extends StatefulWidget {
   final String result;
 
-  ScanD({required this.result});
+  ScanAndSellPage({required this.result});
 
   @override
-  _ScanDState createState() => _ScanDState();
+  _ScanAndSellPageState createState() => _ScanAndSellPageState();
 }
 
-class _ScanDState extends State<ScanD> {
+class _ScanAndSellPageState extends State<ScanAndSellPage> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final List<ToDo> _scannedProducts = [];
   final Map<int, int> _productQuantities = {};

@@ -20,6 +20,7 @@ class ScannedProductsPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.blueGrey[50], // Background color
         ),
+        padding: const EdgeInsets.all(16.0), // เพิ่ม padding ที่นี่
         child: Column(
           children: [
             Expanded(
@@ -59,14 +60,19 @@ class ScannedProductsPage extends StatelessWidget {
                 },
               ),
             ),
+            // Container สำหรับแสดงราคารวมและปุ่มชำระเงิน
             Container(
-              width: double.infinity,
+              width: double
+                  .infinity, // ใช้ double.infinity เพื่อให้กว้างเต็มพื้นที่
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(16),
-                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                      color: Colors.grey, width: 1), // กรอบเฉพาะด้านบน
+                ),
+                color: const Color.fromARGB(255, 155, 8, 8),
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(
+                  16), // Internal padding for the total price container
               child: Column(
                 children: [
                   Row(
@@ -75,7 +81,9 @@ class ScannedProductsPage extends StatelessWidget {
                       Text(
                         'ราคารวม ',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white), // เปลี่ยนสีของข้อความ
                       ),
                       Text(
                         '${totalPrice.toStringAsFixed(2)} THB',
@@ -89,7 +97,8 @@ class ScannedProductsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
-                    width: 200,
+                    width: double
+                        .infinity, // ใช้ double.infinity เพื่อให้ปุ่มกว้างเต็มพื้นที่
                     child: ElevatedButton(
                       onPressed: () {
                         // Implement payment logic here
