@@ -5,6 +5,7 @@ import '../db/database_helper.dart';
 import '../models/sale.dart';
 import '../models/todo.dart';
 import 'dart:io';
+import './scanned_products_page.dart'; // เพิ่ม import นี้
 
 class ScanAndSellPage extends StatefulWidget {
   final String result;
@@ -148,8 +149,8 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Colors.blueGrey[50], // Background color
-          border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
+          color: Colors.blueGrey[50],
+          border: Border.all(color: Colors.blueGrey[100]!, width: 2),
         ),
         child: Column(
           children: [
@@ -157,124 +158,36 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
               onPressed: _pickImageAndScan,
               child: const Text('Select Image and Scan Barcode'),
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  itemCount: _scannedProducts.length,
-                  itemBuilder: (context, index) {
-                    final product = _scannedProducts[index];
-                    final quantity = _productQuantities[product.id!] ?? 0;
-
-                    return Container(
-                      decoration: BoxDecoration(
-                        color:
-                            Colors.white, // Background color of the container
-                        borderRadius:
-                            BorderRadius.circular(12.0), // Rounded corners
-                        boxShadow: [
-                          BoxShadow(
-                            color:
-                                Colors.black.withOpacity(0.1), // Shadow color
-                            blurRadius: 4.0, // Shadow blur radius
-                            offset: Offset(0, 2), // Shadow position
-                          ),
-                        ],
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8), // Spacing between items
-                      child: ListTile(
-                        leading: product.imagePath != null
-                            ? Image.file(
-                                File(product.imagePath!),
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                              )
-                            : SizedBox.shrink(),
-                        title: Text(product.name ?? 'Unknown Product'),
-                        subtitle: Text(
-                            'Price: ${product.price.toStringAsFixed(2)} THB'),
-                        trailing: SizedBox(
-                          width: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.remove),
-                                onPressed: () {
-                                  setState(() {
-                                    if (quantity > 1) {
-                                      _productQuantities[product.id!] =
-                                          quantity - 1;
-                                      _calculateTotalPrice();
-                                    }
-                                  });
-                                },
-                              ),
-                              Text('$quantity', style: TextStyle(fontSize: 16)),
-                              IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () {
-                                  setState(() {
-                                    _productQuantities[product.id!] =
-                                        quantity + 1;
-                                    _calculateTotalPrice();
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
             Container(
-              width: double.infinity, // Expand to full width
+              width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.grey, width: 1), // Border color and width
-                borderRadius: BorderRadius.circular(16), // Rounded corners
-                color: Colors.white, // Background color
+                border: Border.all(color: Colors.grey, width: 1),
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
               ),
-              padding: const EdgeInsets.all(16), // Internal padding
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // Space between to push items to edges
-                    children: [
-                      Text(
-                        'ราคารวม ',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '${_totalPrice.toStringAsFixed(2)} THB',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   SizedBox(
-                    width: 200, // Button width
+                    width: 200,
                     child: ElevatedButton(
-                      onPressed: _recordSale,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ScannedProductsPage(
+                              scannedProducts: _scannedProducts,
+                            ),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.green, // Updated to backgroundColor
+                        backgroundColor: Colors.green,
                       ),
                       child: const Text(
-                        'ชำระเงิน',
-                        style: TextStyle(color: Colors.white), // Text color
+                        'Next',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

@@ -176,9 +176,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 4.0),
                             child: Image.asset(
-                              'assets/images/configuration_1.png', // Replace with your image path
-                              width: 24,
-                              height: 24,
+                              'assets/icon/edit.png', // Replace with your image path
+                              width: 16,
+                              height: 16,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -188,26 +188,12 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                               mainAxisAlignment: MainAxisAlignment
                                   .start, // Aligns children to the start
                               children: [
-                                SizedBox(
-                                    width: 8), // Space between text and buttons
-                                IconButton(
-                                  icon: Icon(Icons.remove), // Decrease button
-                                  onPressed: () {
-                                    // Add your decrease logic here
-                                  },
-                                ),
                                 Text(
                                   '${todo.quantity}', // Display quantity value
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[700],
                                   ),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.add), // Increase button
-                                  onPressed: () {
-                                    // Add your increase logic here
-                                  },
                                 ),
                               ],
                             ),
