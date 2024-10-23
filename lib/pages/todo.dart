@@ -145,27 +145,70 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Header Text 1',
+                              'Total Product',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 8,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(
+                                height:
+                                    4), // Space between 'Profit' and '2,350'
+
                             Text(
-                              'Subtitle 1',
+                              '128',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 16,
+                                fontWeight: FontWeight
+                                    .bold, // Add this line for bold text
                               ),
                             ),
-                            Text(
-                              'Additional Info 1',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
+                            SizedBox(
+                                height:
+                                    6), // Space between 'Profit' and '2,350'
+
+                            // Text 3
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .blue, // Change background color to blue
+                                    borderRadius: BorderRadius.circular(
+                                        50.0), // Make it oval
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 4.0), // Add some padding
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize
+                                        .min, // Minimize the size of the row
+                                    children: [
+                                      Image.asset(
+                                        'assets/icon/up-arrowStock.png', // Replace with your image path
+                                        width: 8,
+                                        height: 8,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              4), // Space between the image and text
+                                      Text(
+                                        '+8.00%',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
+
+                            //
                           ],
                         ),
                       ),
@@ -267,13 +310,25 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               color: Colors.blue, // Set the background color as needed
               height: 40, // Set the desired height
               alignment: Alignment.center,
-              child: Text(
-                'Product List',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center the row content
+                children: [
+                  Text(
+                    'Product List',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 200), // Space between text and icon
+                  Image.asset(
+                    'assets/icon/preferences.png', // Replace with your image path
+                    width: 24, // Set width as needed
+                    height: 24, // Set height as needed
+                  ),
+                ],
               ),
             ),
             Expanded(
