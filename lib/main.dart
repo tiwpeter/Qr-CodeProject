@@ -38,18 +38,15 @@ class _MyHomePageState extends State<MyHomePage> {
 //nav
   final List<Widget> tabs = [
     MyPageQr2(), // qr home scan
-    BarcodeScannerScreen(result: 'InitialResult'), // add
     TodoApp(), // stock
+
+    BarcodeScannerScreen(result: 'InitialResult'), // add
     LogInput(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

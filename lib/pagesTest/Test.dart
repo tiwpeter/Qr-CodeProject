@@ -1,10 +1,9 @@
-// qr home scan
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:poject_qr/pageSale/ScanAndSellPage.dart'; // Check this path and class
-import 'package:poject_qr/pages/qrcode.dart'; // Check this path and class
+import 'package:poject_qr/pageSale/ScanAndSellPage.dart';
+import 'package:poject_qr/pages/qrcode.dart';
 
 void main() {
   runApp(MyPageQr2());
@@ -30,36 +29,40 @@ class MyPageQr2 extends StatelessWidget {
             ),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('No barcode found')),
-          );
+          _showSnackBar(context, 'No barcode found');
         }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error occurred: $e')),
-      );
+      _showSnackBar(context, 'Error occurred: $e');
     }
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.0),
-          child: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('shop_one', style: TextStyle(fontSize: 18)),
+                SizedBox(width: 10),
                 CustomButton(
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text('find', style: TextStyle(color: Colors.white)),
-                  alignment: Alignment.center,
+                  onPressed: () {
+                    // Handle button press
+                  },
                 ),
               ],
             ),
@@ -71,47 +74,40 @@ class MyPageQr2 extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 32, vertical: 38),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            height: 266,
-                            color: Colors.grey[200],
-                            child: Text('view_two'),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 42),
-                                child:
-                                    Text('Add', style: TextStyle(fontSize: 16)),
-                              ),
-                              GestureDetector(
-                                onTap: () => _pickImageAndScan(context),
-                                child: CustomButton(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.blue),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text('sell',
-                                      style: TextStyle(color: Colors.blue)),
-                                  alignment: Alignment.center,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 42),
-                                child: Text('search',
-                                    style: TextStyle(fontSize: 16)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    SizedBox(height: 15),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 270,
+                      height: 200,
+                      color: Colors.grey[200],
+                      child: Text('view_two'),
                     ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 42),
+                          child: Text('Add', style: TextStyle(fontSize: 16)),
+                        ),
+                        GestureDetector(
+                          onTap: () => _pickImageAndScan(context),
+                          child: CustomButton(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text('sell',
+                                style: TextStyle(color: Colors.blue)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 42),
+                          child: Text('search', style: TextStyle(fontSize: 16)),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -138,10 +134,13 @@ class MyPageQr2 extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      height: 84,
-                      margin: EdgeInsets.only(top: 78, bottom: 4),
-                      color: Colors.grey[300],
-                      child: Text('view_one'),
+                      width: 72, // Set a width for the circle
+                      height: 72, // Set a height for the circle
+                      margin: EdgeInsets.only(top: 60, bottom: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        shape: BoxShape.circle, // Make it a circle
+                      ),
                     ),
                   ],
                 ),
@@ -162,7 +161,6 @@ class MyPageQr2 extends StatelessWidget {
     );
   }
 
-  // add Page
   void _navigateToAddPage(BuildContext context, String result) {
     Navigator.push(
       context,
@@ -176,21 +174,23 @@ class MyPageQr2 extends StatelessWidget {
 class CustomButton extends StatelessWidget {
   final BoxDecoration decoration;
   final Widget child;
-  final AlignmentGeometry alignment;
+  final VoidCallback? onPressed;
 
   CustomButton({
     required this.decoration,
     required this.child,
-    required this.alignment,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: decoration,
-      alignment: alignment,
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      child: child,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: decoration,
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: child,
+      ),
     );
   }
 }
