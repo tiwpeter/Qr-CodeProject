@@ -148,24 +148,55 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             children: [
                               Container(
                                 padding: EdgeInsets.symmetric(vertical: 2.0),
-                                child: Image.asset(
-                                  'assets/icon/arrowY.png',
-                                  width: 16,
-                                  height: 16,
-                                  fit: BoxFit.cover,
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/icon/arrowY.png',
+                                      width: 16,
+                                      height: 16,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    SizedBox(
+                                        width:
+                                            4), // เพิ่มระยะห่างระหว่างรูปกับตัวเลข
+                                    Text(
+                                      '100', // เปลี่ยนเป็นตัวเลขที่ต้องการแสดง
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
+                              SizedBox(
+                                  width:
+                                      16), // เพิ่มระยะห่างระหว่างกลุ่มแรกกับกลุ่มที่สอง
                               Container(
                                 padding: EdgeInsets.symmetric(vertical: 2.0),
-                                child: Image.asset(
-                                  'assets/icon/arrowxX.png',
-                                  width: 16,
-                                  height: 16,
-                                  fit: BoxFit.cover,
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/icon/arrowxX.png',
+                                      width: 16,
+                                      height: 16,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    SizedBox(
+                                        width:
+                                            4), // เพิ่มระยะห่างระหว่างรูปกับตัวเลข
+                                    Text(
+                                      '200', // เปลี่ยนเป็นตัวเลขที่ต้องการแสดง
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
