@@ -121,8 +121,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               height: 100, // Adjust height as needed
               alignment: Alignment.center,
               child: Padding(
-                padding:
-                    EdgeInsets.all(16.0), // Adjust the padding value as needed
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment:
                       MainAxisAlignment.spaceBetween, // Space them evenly
@@ -208,13 +207,46 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                     .bold, // Add this line for bold text
                               ),
                             ),
-                            Text(
-                              '+2.34%',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                              ),
+                            // Text 3
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .blue, // Change background color to blue
+                                    borderRadius: BorderRadius.circular(
+                                        50.0), // Make it oval
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.0,
+                                      vertical: 4.0), // Add some padding
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize
+                                        .min, // Minimize the size of the row
+                                    children: [
+                                      Image.asset(
+                                        'assets/icon/up-arrowStock.png', // Replace with your image path
+                                        width: 8,
+                                        height: 8,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              4), // Space between the image and text
+                                      Text(
+                                        '+2.34%',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
+
+                            //
                           ],
                         ),
                       ),
