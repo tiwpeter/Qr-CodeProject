@@ -21,8 +21,7 @@ class _AddStockState extends State<AddStock> {
   final TextEditingController _purchasePriceController =
       TextEditingController();
   final TextEditingController _salePriceController = TextEditingController();
-  final TextEditingController _detailController =
-      TextEditingController(); // เพิ่ม Controller สำหรับ Detail
+  final TextEditingController _detailController = TextEditingController();
 
   int _quantity = 0;
   String _scanResult = 'ผลการสแกนจะปรากฏที่นี่';
@@ -53,9 +52,8 @@ class _AddStockState extends State<AddStock> {
       barcode: _barcode!,
       imagePath: _image?.path,
       name: _nameController.text,
-      price: double.tryParse(_salePriceController.text) ?? 0.0, // ใช้ราคาขาย
+      price: double.tryParse(_salePriceController.text) ?? 0.0,
       quantity: _quantity,
-      // detail: _detailController.text, // เพิ่ม Detail
     );
 
     await _dbHelper.insertToDo(todo);
@@ -71,155 +69,215 @@ class _AddStockState extends State<AddStock> {
       appBar: AppBar(
         title: const Text('เพิ่มสินค้า'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                if (_image != null)
-                  Image.file(
-                    _image!,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextField(
-                        controller: _nameController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'ชื่อสินค้า',
+      body: Container(
+        color: Color.fromARGB(255, 254, 247, 255),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  if (_image != null)
+                    Image.file(
+                      _image!,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: 'ชื่อสินค้า',
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 255, 255, 255),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 214, 214, 213),
+                                  width: 2.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 101, 185, 254),
+                                  width: 2.0),
+                            ),
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: _pickImage,
+                                  child: Image.asset(
+                                    'assets/images/camera_1.png',
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                GestureDetector(
+                                  onTap: _pickImage,
+                                  child: Image.asset(
+                                    'assets/images/camera_1.png',
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.remove),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (_quantity > 0) _quantity--;
+                                    });
+                                  },
+                                ),
+                                Text('$_quantity'),
+                                IconButton(
+                                  icon: const Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      _quantity++;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Barcode: $_scanResult',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  TextField(
+                    controller: _categoryController,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'Category',
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 255, 255, 255),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 214, 214, 213),
+                            width: 2.0),
                       ),
-                      const SizedBox(height: 10), // เพิ่มระยะห่าง
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment
-                                .center, // Center the items vertically (optional)
-                            children: [
-                              GestureDetector(
-                                onTap: _pickImage, // Function to pick an image
-                                child: Image.asset(
-                                  'assets/images/camera_1.png',
-                                  height: 24, // Adjust size as needed
-                                  width: 24,
-                                ),
-                              ),
-                              SizedBox(
-                                  height:
-                                      16), // Space between the two images (optional)
-                              GestureDetector(
-                                onTap: _pickImage, // Function to pick an image
-                                child: Image.asset(
-                                  'assets/images/camera_1.png',
-                                  height: 24, // Adjust size as needed
-                                  width: 24,
-                                ),
-                              ),
-                            ],
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 101, 185, 254),
+                            width: 2.0),
+                      ),
+                    ),
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _purchasePriceController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: 'ราคาซื้อ',
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 255, 255, 255),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 214, 214, 213),
+                                  width: 2.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 101, 185, 254),
+                                  width: 2.0),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.remove),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_quantity > 0) _quantity--;
-                                  });
-                                },
-                              ),
-                              Text('$_quantity'),
-                              IconButton(
-                                icon: const Icon(Icons.add),
-                                onPressed: () {
-                                  setState(() {
-                                    _quantity++;
-                                  });
-                                },
-                              ),
-                            ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          maxLines: 1,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: _salePriceController,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: 'ราคาขาย',
+                            filled: true,
+                            fillColor: Color.fromARGB(255, 255, 255, 255),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 214, 214, 213),
+                                  width: 2.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 101, 185, 254),
+                                  width: 2.0),
+                            ),
                           ),
-                        ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
+                          maxLines: 1,
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Barcode: $_scanResult',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                TextField(
-                  controller: _categoryController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Category',
-                  ),
-                  maxLines: 1,
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _purchasePriceController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'ราคาซื้อ',
-                        ),
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        maxLines: 1,
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _detailController,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'รายละเอียด',
+                      filled: true,
+                      fillColor: Color.fromARGB(255, 255, 255, 255),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 214, 214, 213),
+                            width: 2.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Color.fromARGB(255, 101, 185, 254),
+                            width: 2.0),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: _salePriceController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'ราคาขาย',
-                        ),
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        maxLines: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _detailController, // ใช้ Controller สำหรับ Detail
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'รายละเอียด',
+                    maxLines: 3,
                   ),
-                  maxLines: 3, // ให้สามารถพิมพ์หลายบรรทัด
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveToDoItem,
-              child: const Text('บันทึกสินค้า'),
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveToDoItem,
+                child: const Text('บันทึกสินค้า'),
+              ),
+            ],
+          ),
         ),
       ),
     );
