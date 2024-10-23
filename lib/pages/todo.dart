@@ -197,3 +197,12 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
     );
   }
 }
+/*
+เพิ่ม: ถ้ามีสินค้าเข้ามาใหม่ เช่น การรับสินค้า
+ลด: ถ้ามีสินค้าขายออกไปหรือหมด
+ */
+
+/*
+profit
+totel
+ */
