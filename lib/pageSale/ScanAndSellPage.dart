@@ -75,11 +75,39 @@ class _ScanAndSellPageState extends State<ScanAndSellPage> {
         }
         _calculateTotalPrice();
       });
+
+      // แสดงป๊อปอัพที่แสดงชื่อสินค้าที่ถูกสแกน
+      _showProductPopup(product.name ?? 'Unnamed Product');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Product not found for this barcode')),
       );
     }
+  }
+
+  void _showProductPopup(String productName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Product Scanned'),
+          content: Text(productName),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // ปิดป๊อปอัพอัตโนมัติหลังจาก 3 วินาที
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.of(context).pop(); // ปิดป๊อปอัพ
+    });
   }
 
   void _calculateTotalPrice() {
