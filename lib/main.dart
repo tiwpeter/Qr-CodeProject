@@ -1,84 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:poject_qr/pages/PriceSummaryScreen.dart';
-import 'package:poject_qr/pages/Homemain.dart';
-import 'package:poject_qr/pages/Homepage.dart';
-import 'package:poject_qr/pages/BarCodeSale.dart';
-import 'package:poject_qr/pages/qrcode.dart';
-import 'package:poject_qr/pages/sales_screen.dart';
-import 'package:poject_qr/pages/todo.dart'; // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
-import 'package:poject_qr/pagesTest/Test.dart'; // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
-import 'package:poject_qr/uipage/LogInput.dart';
-import 'package:poject_qr/widgets/LineChartPage%20.dart';
-import 'package:poject_qr/widgets/line_chart_card.dart'; // ตรวจสอบว่ามีการสร้าง Homemain widget และ path ถูกต้อง
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFFFFFFF),
+      home: Scaffold(
+        appBar: AppBar(title: Text('AnimatedSwitcher Example')),
+        body: AnimatedSwitcherExample(),
       ),
-      home: MyHomePage(title: 'My Home Page'), // เปลี่ยนจาก routes เป็น home
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
+class AnimatedSwitcherExample extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _AnimatedSwitcherExampleState createState() =>
+      _AnimatedSwitcherExampleState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
+  bool _showFirst = true;
 
-//nav
-  final List<Widget> tabs = [
-    MyPageQr2(), // qr home scan
-    TodoApp(), // stock
-
-    LineChartPage(),
-    LogInput(),
-  ];
+  void _toggleWidget() {
+    setState(() {
+      _showFirst = !_showFirst;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: tabs[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        backgroundColor: Colors.blue,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon:
-                Image.asset('assets/images/qrcode.png', width: 24, height: 24),
-            label: 'Home',
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedSwitcher(
+            duration: Duration(seconds: 1),
+            child: _showFirst
+                ? Container(
+                    key: ValueKey(1),
+                    width: 200,
+                    height: 200,
+                    color: Colors.blue,
+                    alignment: Alignment.center,
+                    child: Text('First Widget',
+                        style: TextStyle(color: Colors.white)),
+                  )
+                : Container(
+                    key: ValueKey(2),
+                    width: 200,
+                    height: 200,
+                    color: Colors.red,
+                    alignment: Alignment.center,
+                    child: Text('Second Widget',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              // เอฟเฟกต์การย่อลงและเลื่อน
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(0, 0.5), // เริ่มจากด้านล่าง
+                  end: Offset(0, 0),
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                )),
+                child: FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: Tween<double>(
+                      begin: 0.8, // ย่อขนาดเริ่มต้น
+                      end: 1.0, // ขยายกลับไปขนาดเดิม
+                    ).animate(CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    )),
+                    child: child,
+                  ),
+                ),
+              );
+            },
           ),
-          BottomNavigationBarItem(
-            icon:
-                Image.asset('assets/images/stock_1.png', width: 24, height: 24),
-            label: 'Stock',
-          ),
-          BottomNavigationBarItem(
-            icon:
-                Image.asset('assets/images/revenue.png', width: 24, height: 24),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/images/icon.png', width: 24, height: 24),
-            label: 'Settings',
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _toggleWidget,
+            child: Text('Toggle'),
           ),
         ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
       ),
     );
   }

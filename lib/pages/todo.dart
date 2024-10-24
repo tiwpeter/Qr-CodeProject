@@ -13,10 +13,10 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Stock',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      title: 'Stock',
       home: ToDoListScreen(),
     );
   }
@@ -102,6 +102,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       backgroundColor: Color(0xFFFFFFFF), // Set background color to white
 
       appBar: AppBar(
+        backgroundColor: Color(0xFFFFFFFF), // Set background color to white
+
         title: Text('Stock'),
         actions: [
           IconButton(
