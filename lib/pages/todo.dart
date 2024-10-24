@@ -123,7 +123,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               height: 100, // Adjust height as needed
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(6.0),
                 child: Row(
                   mainAxisAlignment:
                       MainAxisAlignment.spaceBetween, // Space them evenly
@@ -154,22 +154,25 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+
                             SizedBox(
                                 height:
-                                    4), // Space between 'Profit' and '2,350'
+                                    3), // Space between 'Profit' and '2,350'
 
                             Text(
                               '128',
                               style: TextStyle(
-                                color: Color(0xFF000000), // Updated color
-                                fontSize: 16,
-                                fontWeight: FontWeight
-                                    .bold, // Add this line for bold text
+                                fontSize: 22,
+
+                                color: Color(
+                                    0xFF000000), // Updated color           fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
+
                             SizedBox(
                                 height:
-                                    6), // Space between 'Profit' and '2,350'
+                                    3), // Space between 'Profit' and '2,350'
 
                             // Text 3
                             Row(
@@ -244,21 +247,22 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+
                             SizedBox(
                                 height:
-                                    4), // Space between 'Profit' and '2,350'
+                                    3), // Space between 'Profit' and '2,350'
 
                             Text(
                               '2,350',
                               style: TextStyle(
                                 color: Color(0xFF000000), // Updated color
-                                fontSize: 16,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(
                                 height:
-                                    6), // Space between 'Profit' and '2,350'
+                                    3), // Space between 'Profit' and '2,350'
 
                             // Text 3
                             Row(
