@@ -21,8 +21,19 @@ class LineChartCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Steps Overview",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              "Revenue",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Color(0xFF8991A3), // ปรับสีที่นี่
+              ),
+            ),
+            Text(
+              "\$27,003.98", // ใช้เครื่องหมาย \$ เพื่อแสดงสัญลักษณ์ดอลลาร์
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold, // ทำให้ตัวหนา
+              ),
             ),
             const SizedBox(height: 20),
             Container(
