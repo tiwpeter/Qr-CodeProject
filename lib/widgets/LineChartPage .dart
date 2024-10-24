@@ -22,7 +22,7 @@ class _LineChartPageState extends State<LineChartPage> {
         child: Column(
           children: [
             Container(
-              color: Colors.red,
+              color: Colors.white,
               height: 100,
               alignment: Alignment.center,
               child: Padding(
@@ -34,21 +34,18 @@ class _LineChartPageState extends State<LineChartPage> {
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Colors.red[700],
-                          border: Border.all(color: Colors.white, width: 2),
+                          color: Color(0xFF0080F6),
+                          // border: Border.all(color: Colors.white, width: 2),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Total Product',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Image.asset(
+                              'assets/icon/pie-chart.png',
+                              width: 20, // Adjust the width as needed
+                              height: 20, // Adjust the height as needed
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -63,24 +60,11 @@ class _LineChartPageState extends State<LineChartPage> {
                             Row(
                               children: [
                                 Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 4.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Image.asset(
-                                        'assets/icon/up-arrowStock.png',
-                                        width: 8,
-                                        height: 8,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      const SizedBox(width: 4),
                                       Text(
-                                        '+8.00%',
+                                        'Product In',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 8,
@@ -100,21 +84,18 @@ class _LineChartPageState extends State<LineChartPage> {
                       child: Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Colors.red[700],
-                          border: Border.all(color: Colors.white, width: 2),
+                          color: Color(0xFF00B2EB),
+                          //border: Border.all(color: Colors.white, width: 2),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Profit',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 8,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Image.asset(
+                              'assets/icon/pie-chart2.png',
+                              width: 20, // Adjust the width as needed
+                              height: 20, // Adjust the height as needed
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -129,24 +110,11 @@ class _LineChartPageState extends State<LineChartPage> {
                             Row(
                               children: [
                                 Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0, vertical: 4.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Image.asset(
-                                        'assets/icon/up-arrowStock.png',
-                                        width: 8,
-                                        height: 8,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      const SizedBox(width: 4),
                                       Text(
-                                        '+2.34%',
+                                        'Product Out',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 8,
