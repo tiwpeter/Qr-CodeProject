@@ -8,65 +8,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: AnimatedSwitcherExample(),
+      home: Scaffold(
+        appBar: AppBar(title: Text('เด้งกล่อง')),
+        body: BouncingBoxExample(),
+      ),
     );
   }
 }
 
-class AnimatedSwitcherExample extends StatefulWidget {
+class BouncingBoxExample extends StatefulWidget {
   @override
-  _AnimatedSwitcherExampleState createState() =>
-      _AnimatedSwitcherExampleState();
+  _BouncingBoxExampleState createState() => _BouncingBoxExampleState();
 }
 
-class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
-  bool _showRedBox = true;
+class _BouncingBoxExampleState extends State<BouncingBoxExample> {
+  bool _isSmall = false;
 
-  void _toggleBox() {
+  void _toggleSize() {
     setState(() {
-      _showRedBox = !_showRedBox;
+      _isSmall = !_isSmall;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('สองกล่อง')),
-      body: GestureDetector(
-        onTap: _toggleBox,
-        child: Stack(
-          children: [
-            AnimatedPositioned(
-              duration: Duration(seconds: 1),
-              top: _showRedBox ? 0 : 460, // starting position
-              right: _showRedBox ? 0 : 100, // starting position
-
-              child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 500),
-                child: _showRedBox
-                    ? Container(
-                        key: ValueKey('RedBox'),
-                        width: 100,
-                        height: 100,
-                        color: Colors.red, // กล่องแดง
-                      )
-                    : Container(
-                        key: ValueKey('BlueBox'),
-                        width: 100,
-                        height: 100,
-                        color: Colors.blue, // กล่องฟ้า
-                      ),
+    return Center(
+      child: GestureDetector(
+        onTap: _toggleSize,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          width: _isSmall ? 100 : 200, // ขนาดกล่อง
+          height: _isSmall ? 100 : 200,
+          decoration: BoxDecoration(
+            color: Colors.red,
+            borderRadius: BorderRadius.circular(_isSmall ? 10 : 0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: _isSmall ? 0 : 10,
+                offset: Offset(0, _isSmall ? 0 : 5),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.blue, // กล่องฟ้า
-              ),
-            ),
-          ],
+            ],
+          ),
+          curve: Curves.bounceInOut, // เอฟเฟกต์เด้ง
         ),
       ),
     );
