@@ -8,63 +8,66 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('สองกล่อง')),
-        body: AnimatedBoxExample(),
-      ),
+      home: AnimatedSwitcherExample(),
     );
   }
 }
 
-class AnimatedBoxExample extends StatefulWidget {
+class AnimatedSwitcherExample extends StatefulWidget {
   @override
-  _AnimatedBoxExampleState createState() => _AnimatedBoxExampleState();
+  _AnimatedSwitcherExampleState createState() =>
+      _AnimatedSwitcherExampleState();
 }
 
-class _AnimatedBoxExampleState extends State<AnimatedBoxExample> {
-  bool _isMoved = false;
+class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
+  bool _showRedBox = true;
 
-  void _togglePosition() {
+  void _toggleBox() {
     setState(() {
-      _isMoved = !_isMoved;
+      _showRedBox = !_showRedBox;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AnimatedPositioned(
-          duration: Duration(seconds: 1),
-          curve: Curves.easeInOut,
-          top: _isMoved ? 50 : 0, // เลื่อนกล่องแดงขึ้น
-          right: _isMoved ? 0 : 50, // เลื่อนกล่องแดงไปทางขวา
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.red, // กล่องแดง
-          ),
+    return Scaffold(
+      appBar: AppBar(title: Text('สองกล่อง')),
+      body: GestureDetector(
+        onTap: _toggleBox,
+        child: Stack(
+          children: [
+            AnimatedPositioned(
+              duration: Duration(seconds: 1),
+              top: _showRedBox ? 0 : 200,
+              right: _showRedBox ? 0 : 100,
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 500),
+                child: _showRedBox
+                    ? Container(
+                        key: ValueKey('RedBox'),
+                        width: 100,
+                        height: 100,
+                        color: Colors.red, // กล่องแดง
+                      )
+                    : Container(
+                        key: ValueKey('BlueBox'),
+                        width: 100,
+                        height: 100,
+                        color: Colors.blue, // กล่องฟ้า
+                      ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                width: 100,
+                height: 100,
+                color: Colors.blue, // กล่องฟ้า
+              ),
+            ),
+          ],
         ),
-        AnimatedPositioned(
-          duration: Duration(seconds: 1),
-          curve: Curves.easeInOut,
-          bottom: _isMoved ? 50 : 0, // เลื่อนกล่องฟ้าขึ้น
-          left: _isMoved ? 0 : 50, // เลื่อนกล่องฟ้าไปทางซ้าย
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.blue, // กล่องฟ้า
-          ),
-        ),
-        Positioned(
-          bottom: 20,
-          left: 20,
-          child: ElevatedButton(
-            onPressed: _togglePosition,
-            child: Text('Toggle Position'),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
