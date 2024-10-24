@@ -25,8 +25,8 @@ class LineChartCard extends StatelessWidget {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 20),
-            AspectRatio(
-              aspectRatio: 16 / 6,
+            Container(
+              height: 180,
               child: LineChart(
                 LineChartData(
                   lineTouchData: LineTouchData(
@@ -68,19 +68,9 @@ class LineChartCard extends StatelessWidget {
                       ),
                     ),
                     leftTitles: AxisTitles(
+                      // ไม่แสดงแกน Y
                       sideTitles: SideTitles(
-                        getTitlesWidget: (double value, TitleMeta meta) {
-                          return data.leftTitle[value.toInt()] != null
-                              ? Text(
-                                  data.leftTitle[value.toInt()].toString(),
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[400]),
-                                )
-                              : const SizedBox();
-                        },
-                        showTitles: true,
-                        interval: 1,
-                        reservedSize: 40,
+                        showTitles: false, // ปิดการแสดง
                       ),
                     ),
                   ),
