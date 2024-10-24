@@ -4,12 +4,38 @@ import '../widgets/custom_card_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartCard extends StatelessWidget {
+class LineChartCard extends StatefulWidget {
   const LineChartCard({super.key});
+
+  @override
+  _LineChartCardState createState() => _LineChartCardState();
+}
+
+class _LineChartCardState extends State<LineChartCard> {
+  String _selectedPeriod = '1m'; // Default to 1 month
+
+  // Sample data filter based on selected period
+  List<FlSpot> _filterData(String period, LineData data) {
+    switch (period) {
+      case '1m':
+        return data.spots.where((spot) => spot.x <= 30).toList(); // 1 month
+      case '2m':
+        return data.spots.where((spot) => spot.x <= 60).toList(); // 2 months
+      case '3m':
+        return data.spots.where((spot) => spot.x <= 90).toList(); // 3 months
+      case '6m':
+        return data.spots.where((spot) => spot.x <= 180).toList(); // 6 months
+      case '1y':
+        return data.spots; // 1 year (all data)
+      default:
+        return data.spots;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final data = LineData();
+    final filteredSpots = _filterData(_selectedPeriod, data);
 
     return CustomCard(
       child: Container(
@@ -20,6 +46,26 @@ class LineChartCard extends StatelessWidget {
             Text(
               "Steps Overview",
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: ['1m', '2m', '3m', '6m', '1y'].map((period) {
+                return TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedPeriod = period;
+                    });
+                  },
+                  child: Text(
+                    period,
+                    style: TextStyle(
+                      color:
+                          _selectedPeriod == period ? Colors.blue : Colors.grey,
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 20),
             AspectRatio(
@@ -91,7 +137,7 @@ class LineChartCard extends StatelessWidget {
                         show: true,
                       ),
                       dotData: FlDotData(show: false),
-                      spots: data.spots,
+                      spots: filteredSpots,
                     ),
                   ],
                   minX: 0,
