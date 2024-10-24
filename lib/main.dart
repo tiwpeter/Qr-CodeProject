@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('AnimatedSwitcher Example')),
+        appBar: AppBar(title: Text('AnimatedSwitcher')),
         body: AnimatedSwitcherExample(),
       ),
     );
@@ -46,8 +46,7 @@ class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
                     height: 200,
                     color: Colors.blue,
                     alignment: Alignment.center,
-                    child: Text('First Widget',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text('First', style: TextStyle(color: Colors.white)),
                   )
                 : Container(
                     key: ValueKey(2),
@@ -55,29 +54,20 @@ class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
                     height: 200,
                     color: Colors.red,
                     alignment: Alignment.center,
-                    child: Text('Second Widget',
-                        style: TextStyle(color: Colors.white)),
+                    child:
+                        Text('Second', style: TextStyle(color: Colors.white)),
                   ),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              // เอฟเฟกต์การย่อลงและเลื่อน
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: Offset(0, 0.5), // เริ่มจากด้านล่าง
-                  end: Offset(0, 0),
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeInOut,
-                )),
-                child: FadeTransition(
-                  opacity: animation,
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: Offset(0, 0.5), // เริ่มจากด้านล่าง
+                    end: Offset(0, -1), // เลื่อนขึ้นไปหาตำแหน่ง AppBar
+                  ).animate(animation),
                   child: ScaleTransition(
-                    scale: Tween<double>(
-                      begin: 0.8, // ย่อขนาดเริ่มต้น
-                      end: 1.0, // ขยายกลับไปขนาดเดิม
-                    ).animate(CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeInOut,
-                    )),
+                    scale:
+                        Tween<double>(begin: 0.5, end: 1.0).animate(animation),
                     child: child,
                   ),
                 ),
