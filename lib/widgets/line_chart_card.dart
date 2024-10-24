@@ -13,7 +13,7 @@ class LineChartCard extends StatelessWidget {
 
     return CustomCard(
       child: Container(
-        color: Colors.white, // เปลี่ยนพื้นหลังเป็นสีขาว
+        color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,6 +28,16 @@ class LineChartCard extends StatelessWidget {
                 LineChartData(
                   lineTouchData: LineTouchData(
                     handleBuiltInTouches: true,
+                    touchTooltipData: LineTouchTooltipData(
+                      getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                        return touchedSpots.map((spot) {
+                          return LineTooltipItem(
+                            'Date: ${data.dates[spot.x.toInt()]}\nSteps: ${spot.y}',
+                            TextStyle(color: Colors.white),
+                          );
+                        }).toList();
+                      },
+                    ),
                   ),
                   gridData: FlGridData(show: false),
                   titlesData: FlTitlesData(
@@ -45,11 +55,10 @@ class LineChartCard extends StatelessWidget {
                               ? SideTitleWidget(
                                   axisSide: meta.axisSide,
                                   child: Text(
-                                      data.bottomTitle[value.toInt()]
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey[400])),
+                                    data.bottomTitle[value.toInt()].toString(),
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.grey[400]),
+                                  ),
                                 )
                               : const SizedBox();
                         },
@@ -59,9 +68,11 @@ class LineChartCard extends StatelessWidget {
                       sideTitles: SideTitles(
                         getTitlesWidget: (double value, TitleMeta meta) {
                           return data.leftTitle[value.toInt()] != null
-                              ? Text(data.leftTitle[value.toInt()].toString(),
+                              ? Text(
+                                  data.leftTitle[value.toInt()].toString(),
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[400]))
+                                      fontSize: 12, color: Colors.grey[400]),
+                                )
                               : const SizedBox();
                         },
                         showTitles: true,
@@ -73,15 +84,15 @@ class LineChartCard extends StatelessWidget {
                   borderData: FlBorderData(show: false),
                   lineBarsData: [
                     LineChartBarData(
-                      color: Color(0xFF007AF5), // สีหลัก
+                      color: Color(0xFF007AF5),
                       barWidth: 2.5,
                       belowBarData: BarAreaData(
-                        color: Color(0xFFE6F1FE), // สีรอง
+                        color: Color(0xFFE6F1FE),
                         show: true,
                       ),
                       dotData: FlDotData(show: false),
                       spots: data.spots,
-                    )
+                    ),
                   ],
                   minX: 0,
                   maxX: 120,
