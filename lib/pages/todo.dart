@@ -99,6 +99,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFFFFF), // Set background color to white
+
       appBar: AppBar(
         title: Text('Stock'),
         actions: [
@@ -117,7 +119,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         child: Column(
           children: [
             Container(
-              color: Colors.red,
+              color: Color(0xFFFFFFFF),
               height: 100, // Adjust height as needed
               alignment: Alignment.center,
               child: Padding(
@@ -131,8 +133,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         padding: EdgeInsets.all(
                             8.0), // Inner padding for the content
                         decoration: BoxDecoration(
-                          color: Colors
-                              .red[700], // Background color for the container
+                          color: Color(
+                              0xFFFFFFFF), // Background color for the container
                           border: Border.all(
                               color: Colors.white,
                               width: 2), // Border properties
@@ -147,7 +149,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             Text(
                               'Total Product',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFFA4AAB9), // Updated color
                                 fontSize: 8,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -159,7 +161,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             Text(
                               '128',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFF000000), // Updated color
                                 fontSize: 16,
                                 fontWeight: FontWeight
                                     .bold, // Add this line for bold text
@@ -220,11 +222,12 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                         padding: EdgeInsets.all(
                             8.0), // Inner padding for the content
                         decoration: BoxDecoration(
-                          color: Colors
-                              .red[700], // Background color for the container
+                          color: Color(0xFFFFFFFF),
+// Background color for the container
                           border: Border.all(
-                              color: Colors.white,
-                              width: 2), // Border properties
+                            color: Colors.white,
+                            width: 2,
+                          ), // Border properties
                           borderRadius:
                               BorderRadius.circular(8.0), // Rounded corners
                         ),
@@ -236,7 +239,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             Text(
                               'Profit',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFFA4AAB9), // Updated color
                                 fontSize: 8,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -248,10 +251,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                             Text(
                               '2,350',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFF000000), // Updated color
                                 fontSize: 16,
-                                fontWeight: FontWeight
-                                    .bold, // Add this line for bold text
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             SizedBox(
@@ -287,7 +289,8 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                       Text(
                                         '+2.34%',
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: Color(
+                                              0xFF48C7F0), // Updated color
                                           fontSize: 8,
                                         ),
                                       ),
@@ -296,8 +299,6 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                                 ),
                               ],
                             ),
-
-                            //
                           ],
                         ),
                       ),
@@ -307,7 +308,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
               ),
             ),
             Container(
-              color: Colors.blue, // Set the background color as needed
+              color: Color(0xFFFFFFFF), // Set the background color as needed
               height: 40, // Set the desired height
               alignment: Alignment.center,
               child: Row(
@@ -317,7 +318,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
                   Text(
                     'Product List',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

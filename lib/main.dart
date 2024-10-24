@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xFFFFFFFF),
       ),
       home: MyHomePage(title: 'My Home Page'), // เปลี่ยนจาก routes เป็น home
     );

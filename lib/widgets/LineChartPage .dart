@@ -15,7 +15,7 @@ class _LineChartPageState extends State<LineChartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Steps Overview'),
+        title: const Text('Dashboard'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
