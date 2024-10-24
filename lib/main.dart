@@ -9,78 +9,62 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('AnimatedSwitcher')),
-        body: AnimatedSwitcherExample(),
+        appBar: AppBar(title: Text('สองกล่อง')),
+        body: AnimatedBoxExample(),
       ),
     );
   }
 }
 
-class AnimatedSwitcherExample extends StatefulWidget {
+class AnimatedBoxExample extends StatefulWidget {
   @override
-  _AnimatedSwitcherExampleState createState() =>
-      _AnimatedSwitcherExampleState();
+  _AnimatedBoxExampleState createState() => _AnimatedBoxExampleState();
 }
 
-class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
-  bool _showFirst = true;
+class _AnimatedBoxExampleState extends State<AnimatedBoxExample> {
+  bool _isMoved = false;
 
-  void _toggleWidget() {
+  void _togglePosition() {
     setState(() {
-      _showFirst = !_showFirst;
+      _isMoved = !_isMoved;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AnimatedSwitcher(
-            duration: Duration(seconds: 1),
-            child: _showFirst
-                ? Container(
-                    key: ValueKey(1),
-                    width: 200,
-                    height: 200,
-                    color: Colors.blue,
-                    alignment: Alignment.center,
-                    child: Text('First', style: TextStyle(color: Colors.white)),
-                  )
-                : Container(
-                    key: ValueKey(2),
-                    width: 200,
-                    height: 200,
-                    color: Colors.red,
-                    alignment: Alignment.center,
-                    child:
-                        Text('Second', style: TextStyle(color: Colors.white)),
-                  ),
-            transitionBuilder: (child, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(
-                  position: Tween<Offset>(
-                    begin: Offset(0, 0.5), // เริ่มจากด้านล่าง
-                    end: Offset(0, -1), // เลื่อนขึ้นไปหาตำแหน่ง AppBar
-                  ).animate(animation),
-                  child: ScaleTransition(
-                    scale:
-                        Tween<double>(begin: 0.5, end: 1.0).animate(animation),
-                    child: child,
-                  ),
-                ),
-              );
-            },
+    return Stack(
+      children: [
+        AnimatedPositioned(
+          duration: Duration(seconds: 1),
+          curve: Curves.easeInOut,
+          top: _isMoved ? 50 : 0, // เลื่อนกล่องแดงขึ้น
+          right: _isMoved ? 0 : 50, // เลื่อนกล่องแดงไปทางขวา
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.red, // กล่องแดง
           ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _toggleWidget,
-            child: Text('Toggle'),
+        ),
+        AnimatedPositioned(
+          duration: Duration(seconds: 1),
+          curve: Curves.easeInOut,
+          bottom: _isMoved ? 50 : 0, // เลื่อนกล่องฟ้าขึ้น
+          left: _isMoved ? 0 : 50, // เลื่อนกล่องฟ้าไปทางซ้าย
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.blue, // กล่องฟ้า
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          bottom: 20,
+          left: 20,
+          child: ElevatedButton(
+            onPressed: _togglePosition,
+            child: Text('Toggle Position'),
+          ),
+        ),
+      ],
     );
   }
 }
