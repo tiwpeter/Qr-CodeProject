@@ -38,8 +38,9 @@ class _AnimatedSwitcherExampleState extends State<AnimatedSwitcherExample> {
           children: [
             AnimatedPositioned(
               duration: Duration(seconds: 1),
-              top: _showRedBox ? 0 : 200,
-              right: _showRedBox ? 0 : 100,
+              top: _showRedBox ? 0 : 460, // starting position
+              right: _showRedBox ? 0 : 100, // starting position
+
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 child: _showRedBox
