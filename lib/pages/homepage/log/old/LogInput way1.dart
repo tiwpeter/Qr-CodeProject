@@ -82,18 +82,15 @@ class InfoContainer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('\$${textmoney}', // ใส่เครื่องหมาย $ ก่อนตัวเลข
+                  Text(textmoney,
                       style: TextStyle(fontSize: 18, color: Colors.black)),
                   SizedBox(width: 10),
                   Text(
                     textstate,
                     style: TextStyle(
-                      fontSize: 18,
-                      color: textstate == 'Complete'
-                          ? Colors.green
-                          : Colors.grey, // ถ้าเป็น Complete ให้เป็นสีเขียว
-                    ),
-                  )
+                        fontSize: 18,
+                        color: Colors.grey), // Adjust to another color
+                  ),
                 ],
               ),
             ),
@@ -111,14 +108,14 @@ class MyFlexLayout extends StatelessWidget {
       'textA': 'Add Nike',
       'textTime': '9/6/2024',
       'textstate': 'Complete',
-      'textmoney': '1,900.00',
+      'textmoney': '987',
     },
     {
       'image': 'assets/images/input_11.png',
       'textA': 'Sell Coke',
       'textTime': '9/6/2024',
-      'textstate': 'Process',
-      'textmoney': '30.00',
+      'textstate': 'Cancel',
+      'textmoney': '207',
     },
   ];
 

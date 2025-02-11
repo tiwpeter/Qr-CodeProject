@@ -7,19 +7,19 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor:
-          Color(0xFFC7253E), // ตั้งค่าสีพื้นหลังของ AppBar เป็นสีแดง
+      /* backgroundColor:
+          Color(0xFFC7253E), // ตั้งค่าสีพื้นหลังของ AppBar เป็นสีแดง*/
       title: Text(
         'LogInput',
         style: TextStyle(
             fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white), // ตั้งค่าสีข้อความเป็นสีขาว
+            /*     fontWeight: FontWeight.bold,*/
+            color: Colors.black), // ตั้งค่าสีข้อความเป็นสีขาว
       ),
       actions: [
         IconButton(
           icon: Icon(Icons.search,
-              color: Colors.white), // ตั้งค่าสีของไอคอนเป็นสีขาว
+              color: Colors.black), // ตั้งค่าสีของไอคอนเป็นสีขาว
           onPressed: () {
             showDialog(
               context: context,
@@ -68,8 +68,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               'All',
               style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white), // ตั้งค่าสีข้อความเป็นสีขาว
+                  /*     fontWeight: FontWeight.bold,*/
+                  color: Colors.black), // ตั้งค่าสีข้อความเป็นสีขาว
             ),
             SizedBox(width: 8),
             Image.asset('assets/images/menu_11.png',

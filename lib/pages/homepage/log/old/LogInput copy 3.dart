@@ -38,12 +38,8 @@ class InfoContainer extends StatelessWidget {
       width: double.infinity,
       height: 85, // Increased height to accommodate the date
       decoration: BoxDecoration(
-        // color: Colors.lightBlue[50],  เพิ่มสีพื้นหลังที่นี่
-
         border: Border.all(color: Colors.blueGrey[100]!, width: 2), // Border
       ),
-      margin: EdgeInsets.symmetric(horizontal: 8.0), // เพิ่ม margin ซ้ายขวา
-
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -82,18 +78,15 @@ class InfoContainer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('\$${textmoney}', // ใส่เครื่องหมาย $ ก่อนตัวเลข
+                  Text(textmoney,
                       style: TextStyle(fontSize: 18, color: Colors.black)),
                   SizedBox(width: 10),
                   Text(
                     textstate,
                     style: TextStyle(
-                      fontSize: 18,
-                      color: textstate == 'Complete'
-                          ? Colors.green
-                          : Colors.grey, // ถ้าเป็น Complete ให้เป็นสีเขียว
-                    ),
-                  )
+                        fontSize: 18,
+                        color: Colors.grey), // Adjust to another color
+                  ),
                 ],
               ),
             ),
@@ -109,16 +102,16 @@ class MyFlexLayout extends StatelessWidget {
     {
       'image': 'assets/images/input_1.png',
       'textA': 'Add Nike',
-      'textTime': '9/6/2024',
+      'textB': '9/6/2024',
       'textstate': 'Complete',
-      'textmoney': '1,900.00',
+      'textmoney': '987',
     },
     {
       'image': 'assets/images/input_11.png',
       'textA': 'Sell Coke',
-      'textTime': '9/6/2024',
-      'textstate': 'Process',
-      'textmoney': '30.00',
+      'textB': '9/6/2024',
+      'textstate': 'Cancel',
+      'textmoney': '207',
     },
   ];
 
@@ -127,7 +120,7 @@ class MyFlexLayout extends StatelessWidget {
     // Group data by date
     Map<String, List<Map<String, String>>> groupedData = {};
     for (var item in data) {
-      groupedData.putIfAbsent(item['textTime']!, () => []).add(item);
+      groupedData.putIfAbsent(item['textB']!, () => []).add(item);
     }
 
     return Padding(
@@ -151,17 +144,12 @@ class MyFlexLayout extends StatelessWidget {
               ),
               // Display the items for that date
               for (var item in items)
-                Column(
-                  children: [
-                    InfoContainer(
-                      image: item['image']!,
-                      textA: item['textA']!,
-                      textB: item['textTime']!,
-                      textstate: item['textstate']!,
-                      textmoney: item['textmoney']!,
-                    ),
-                    SizedBox(height: 10), // Add space between InfoContainers
-                  ],
+                InfoContainer(
+                  image: item['image']!,
+                  textA: item['textA']!,
+                  textB: item['textB']!,
+                  textstate: item['textstate']!,
+                  textmoney: item['textmoney']!,
                 ),
             ],
           );

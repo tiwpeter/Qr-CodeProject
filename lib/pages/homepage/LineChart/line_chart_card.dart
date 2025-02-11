@@ -1,6 +1,5 @@
-import '../../../const/constant.dart';
-import '../../../data/line_chart_data.dart';
-import '../../../old/widgets/custom_card_widget.dart';
+import './data/line_chart_data.dart';
+import './custom_card_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
