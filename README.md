@@ -1,16 +1,7 @@
-# my_app
+# Flutter POS Barcode Scanner
 
-A new Flutter project.
+## 📌 รายละเอียดโปรเจกต์
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+แอปนี้พัฒนาด้วย **Flutter** สำหรับใช้งานบนอุปกรณ์ Android/iOS  
+สามารถ **สแกนบาร์โค้ดเพื่อขายสินค้า**, **นำเข้าสินค้าเข้าสต็อก**, **แสดงบิล/ใบเสร็จ**, และ **ดูรายงานยอดขาย** แบบเรียลไทม์  
+เหมาะสำหรับร้านค้าขนาดเล็กถึงกลาง ที่ต้องการระบบ POS บนมือถือ
