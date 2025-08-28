@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/views/BarcodeHistoryView.dart';
 import 'package:provider/provider.dart';
 import 'viewmodels/barcode_view_model.dart';
 import 'views/barcode_view.dart';
@@ -52,6 +53,15 @@ class MainMenu extends StatelessWidget {
                 );
               },
               child: const Text('ไปหน้า Home'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const BarcodeHistoryView()),
+                );
+              },
+              child: const Text('history'),
             ),
           ],
         ),

@@ -17,7 +17,7 @@ class BarcodeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => viewModel.pickImageAndScan(context),
+              onPressed: () => viewModel.pickImageScanAndSearch(context),
               child: const Text('เลือกภาพจาก Gallery'),
             ),
             const SizedBox(height: 20),
