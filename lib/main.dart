@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/viewmodels/ScanBarcode.dart';
 import 'package:poject_qr/views/BarcodeHistoryView.dart';
+import 'package:poject_qr/views/addproducts.dart';
+import 'package:poject_qr/views/scantoadd.dart';
 import 'package:provider/provider.dart';
 import 'viewmodels/barcode_view_model.dart';
 import 'views/barcode_view.dart';
@@ -8,7 +11,11 @@ import 'views/home_view.dart';
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => BarcodeViewModel())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => BarcodeViewModel()),
+        ChangeNotifierProvider(
+            create: (_) => ScanBarcodeViewModel()), // เพิ่มตรงนี้
+      ],
       child: const MyApp(),
     ),
   );
@@ -49,10 +56,10 @@ class MainMenu extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const HomeView()),
+                  MaterialPageRoute(builder: (_) => const ScanBarcodeView()),
                 );
               },
-              child: const Text('ไปหน้า Home'),
+              child: const Text('ไปหน้า AddProductView'),
             ),
             ElevatedButton(
               onPressed: () {

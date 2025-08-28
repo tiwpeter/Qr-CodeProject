@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:poject_qr/services/barcode_service.dart';
+import 'package:poject_qr/views/addproducts.dart';
 import 'package:poject_qr/views/result_view.dart';
 
 import '../db/db_helper.dart';
@@ -83,6 +84,24 @@ class BarcodeViewModel extends ChangeNotifier {
     if (pickedFile == null) return;
 
     await scanFromGallery(File(pickedFile.path));
+  }
+
+  Future<void> pickImageScanAndAddProduct(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile == null) return;
+
+    await scanFromGallery(File(pickedFile.path));
+
+    if (_result != null && _result!.value != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => AddProductView(barcode: _result!.value),
+        ),
+      );
+    }
   }
 
   @override
