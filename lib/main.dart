@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/viewmodels/ScanBarcode.dart';
+import 'package:poject_qr/viewmodels/ScanPayment.dart';
 import 'package:poject_qr/views/BarcodeHistoryView.dart';
+import 'package:poject_qr/views/ScanPayment.dart';
 import 'package:poject_qr/views/addproducts.dart';
 import 'package:poject_qr/views/scantoadd.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => BarcodeViewModel()),
         ChangeNotifierProvider(
             create: (_) => ScanBarcodeViewModel()), // เพิ่มตรงนี้
+        ChangeNotifierProvider(create: (_) => ScanPaymentViewModel())
       ],
       child: const MyApp(),
     ),
@@ -69,6 +72,15 @@ class MainMenu extends StatelessWidget {
                 );
               },
               child: const Text('history'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ScanPaymentView()),
+                );
+              },
+              child: const Text('ScanPayment'),
             ),
           ],
         ),
