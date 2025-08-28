@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/barcode_view_model.dart';
 
@@ -19,15 +17,7 @@ class BarcodeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                final picker = ImagePicker();
-                final pickedFile = await picker.pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile != null) {
-                  await viewModel.scanFromGallery(File(pickedFile.path));
-                }
-              },
+              onPressed: () => viewModel.pickImageAndScan(context),
               child: const Text('เลือกภาพจาก Gallery'),
             ),
             const SizedBox(height: 20),

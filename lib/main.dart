@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'viewmodels/barcode_view_model.dart';
 import 'views/barcode_view.dart';
+import 'views/home_view.dart';
 
 void main() {
   runApp(
@@ -17,6 +18,44 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: BarcodeView());
+    return const MaterialApp(
+      home: MainMenu(),
+    );
+  }
+}
+
+class MainMenu extends StatelessWidget {
+  const MainMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Main Menu')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const BarcodeView()),
+                );
+              },
+              child: const Text('สแกนบาร์โค้ด'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const HomeView()),
+                );
+              },
+              child: const Text('ไปหน้า Home'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
