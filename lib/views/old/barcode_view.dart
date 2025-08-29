@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/barcode_view_model.dart';
+import '../../viewmodels/barcode_view_model.dart';
 
 class BarcodeView extends StatelessWidget {
   const BarcodeView({super.key});

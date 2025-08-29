@@ -104,6 +104,16 @@ class BarcodeViewModel extends ChangeNotifier {
     }
   }
 
+// ฟังก์ชันเลือกภาพจาก Gallery แยก
+  Future<void> pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+
+    _selectedImage = File(pickedFile.path);
+    notifyListeners(); // ✅ แจ้ง UI ว่ามีการเปลี่ยนแปลง
+  }
+
   @override
   void dispose() {
     _service.dispose();

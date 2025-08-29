@@ -3,12 +3,14 @@ class ProductModel {
   final String barcode;
   final String name;
   final double price;
+  final String? imagePath;
 
   ProductModel({
     this.id,
     required this.barcode,
     required this.name,
     required this.price,
+    this.imagePath,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class ProductModel {
       'barcode': barcode,
       'name': name,
       'price': price,
+      'imagePath': imagePath,
     };
   }
 
@@ -26,6 +29,7 @@ class ProductModel {
       barcode: map['barcode'],
       name: map['name'],
       price: map['price'],
+      imagePath: map['imagePath'],
     );
   }
 }

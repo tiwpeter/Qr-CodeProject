@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:poject_qr/db/db_helper.dart';
+import 'package:poject_qr/viewmodels/ScanBarcode.dart';
+import 'package:poject_qr/viewmodels/ScanPayment.dart';
+import 'package:poject_qr/viewmodels/barcode_view_model.dart';
+import 'package:poject_qr/views/ScanPage.dart';
 import 'package:poject_qr/views/startscan.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // สำคัญสำหรับ async ก่อน runApp
+
+  // เรียกสร้าง database
+  await DBHelper().database;
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BarcodeViewModel()),
+        ChangeNotifierProvider(create: (_) => ScanBarcodeViewModel()),
+        ChangeNotifierProvider(create: (_) => ScanPaymentViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key}); // เพิ่ม const
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFFFFFFF),
+        scaffoldBackgroundColor: const Color(0xFFFFFFFF),
       ),
       home: MainTabPage(),
     );
@@ -18,6 +39,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainTabPage extends StatefulWidget {
+  const MainTabPage({super.key});
   @override
   _MainTabPageState createState() => _MainTabPageState();
 }
@@ -25,6 +47,7 @@ class MainTabPage extends StatefulWidget {
 class _MainTabPageState extends State<MainTabPage> {
   int _currentIndex = 0;
 
+  // ลบ const เพราะ constructor ไม่ใช่ const
   final List<Widget> _pages = [
     StartScanPage(),
     SearchPage(),
@@ -64,23 +87,17 @@ class _MainTabPageState extends State<MainTabPage> {
   }
 }
 
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Home Page"));
-  }
-}
-
+// หน้าต่างๆ ของแต่ละ tab
 class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Search Page"));
+    return const Center(child: Text("Search Page"));
   }
 }
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Profile Page"));
+    return const Center(child: Text("Profile Page"));
   }
 }

@@ -1,7 +1,7 @@
-import 'package:poject_qr/models/ProductModel.dart';
-import 'package:poject_qr/models/barcode_result.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../models/ProductModel.dart';
+import '../models/barcode_result.dart';
 
 class DBHelper {
   static final DBHelper _instance = DBHelper._internal();
@@ -20,34 +20,40 @@ class DBHelper {
     final path = join(await getDatabasesPath(), 'barcode.db');
     return await openDatabase(
       path,
-      version: 4, // เปลี่ยนเวอร์ชันเมื่อมีการแก้ schema
+      version: 2,
       onCreate: (db, version) async {
         // สร้างตาราง barcodes
         await db.execute('''
-        CREATE TABLE IF NOT EXISTS barcodes(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          value TEXT,
-          imagePath TEXT
-        )
-      ''');
+          CREATE TABLE IF NOT EXISTS barcodes(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            value TEXT,
+            imagePath TEXT
+          )
+        ''');
 
-        // สร้างตาราง product
+        // สร้างตาราง product พร้อมคอลัมน์ imagePath
         await db.execute('''
-        CREATE TABLE IF NOT EXISTS product(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          barcode TEXT UNIQUE,
-          name TEXT,
-          price REAL
-        )
-      ''');
+          CREATE TABLE IF NOT EXISTS product(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            barcode TEXT UNIQUE,
+            name TEXT,
+            price REAL,
+            imagePath TEXT
+          )
+        ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
+        if (oldVersion < 3) {
+          // ตรวจสอบว่ามีคอลัมน์ imagePath หรือยัง
           final tables = await db.rawQuery('PRAGMA table_info(product)');
           final columnNames = tables.map((e) => e['name'] as String).toList();
+
           if (!columnNames.contains('imagePath')) {
             await db.execute('ALTER TABLE product ADD COLUMN imagePath TEXT');
-            print('DB Upgrade: imagePath added');
+            print('DB Upgrade: คอลัมน์ "imagePath" ถูกสร้างในตาราง product');
+          } else {
+            print(
+                'DB Upgrade: คอลัมน์ "imagePath" มีอยู่แล้ว ไม่ต้องสร้างใหม่');
           }
         }
       },
@@ -75,25 +81,5 @@ class DBHelper {
     final db = await database;
     final maps = await db.query('product');
     return maps.map((map) => ProductModel.fromMap(map)).toList();
-  }
-
-  Future<List<String>> getTableColumns(String tableName) async {
-    final db = await database; // ใช้ getter ที่สร้าง db
-    final result = await db.rawQuery('PRAGMA table_info($tableName)');
-    // result จะเป็น List<Map<String, dynamic>> ที่มี key 'name'
-    return result.map((row) => row['name'] as String).toList();
-  }
-
-  /// ✅ ฟังก์ชันใหม่: ดึงชื่อคอลัมน์ของตาราง
-  Future<List<String>> getColumns(String tableName) async {
-    final db = await database;
-    final info = await db.rawQuery('PRAGMA table_info($tableName)');
-    return info.map((row) => row['name'] as String).toList();
-  }
-
-  /// ✅ ฟังก์ชันใหม่: ตรวจสอบว่าตารางมีคอลัมน์หรือไม่
-  Future<bool> hasColumn(String tableName, String columnName) async {
-    final columns = await getColumns(tableName);
-    return columns.contains(columnName);
   }
 }
