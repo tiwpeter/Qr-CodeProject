@@ -1,90 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:poject_qr/viewmodels/ScanBarcode.dart';
-import 'package:poject_qr/viewmodels/ScanPayment.dart';
-import 'package:poject_qr/views/BarcodeHistoryView.dart';
-import 'package:poject_qr/views/ScanPayment.dart';
-import 'package:poject_qr/views/addproducts.dart';
-import 'package:poject_qr/views/scantoadd.dart';
-import 'package:provider/provider.dart';
-import 'viewmodels/barcode_view_model.dart';
-import 'views/barcode_view.dart';
-import 'views/home_view.dart';
+import 'package:poject_qr/views/startscan.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => BarcodeViewModel()),
-        ChangeNotifierProvider(
-            create: (_) => ScanBarcodeViewModel()), // เพิ่มตรงนี้
-        ChangeNotifierProvider(create: (_) => ScanPaymentViewModel())
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MainMenu(),
+    return MaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Color(0xFFFFFFFF),
+      ),
+      home: MainTabPage(),
     );
   }
 }
 
-class MainMenu extends StatelessWidget {
-  const MainMenu({super.key});
+class MainTabPage extends StatefulWidget {
+  @override
+  _MainTabPageState createState() => _MainTabPageState();
+}
+
+class _MainTabPageState extends State<MainTabPage> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    StartScanPage(),
+    SearchPage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main Menu')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const BarcodeView()),
-                );
-              },
-              child: const Text('สแกนบาร์โค้ด'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ScanBarcodeView()),
-                );
-              },
-              child: const Text('ไปหน้า AddProductView'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const BarcodeHistoryView()),
-                );
-              },
-              child: const Text('history'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ScanPaymentView()),
-                );
-              },
-              child: const Text('ScanPayment'),
-            ),
-          ],
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Home Page"));
+  }
+}
+
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Search Page"));
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Profile Page"));
   }
 }
