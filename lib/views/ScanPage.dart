@@ -22,17 +22,38 @@ class ScanPage extends StatelessWidget {
               const CircularProgressIndicator(),
               const SizedBox(height: 20),
             ],
-            if (viewModel.selectedImage != null)
-              Image.file(viewModel.selectedImage!, height: 200),
-            if (viewModel.result != null)
-              Text("Scanned: ${viewModel.result!.value}"),
+            if (viewModel.scannedBarcodes.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('รายการที่สแกนแล้ว:',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  ...viewModel.scannedBarcodes
+                      .map((code) => Text('- $code'))
+                      .toList(),
+                ],
+              ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await viewModel.scanFromGallery();
-                await viewModel.handleScanComplete(context, action);
+                await viewModel.scanFromGallery(context, action);
+
+                // สำหรับ addProduct จะนำทางแล้ว ไม่ต้องเรียก handleScanComplete
+                if (action != ScanAction.addProduct) {
+                  await viewModel.handleScanComplete(context, action);
+                }
               },
               child: const Text('เลือกภาพจาก Gallery'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: viewModel.scannedBarcodes.isEmpty
+                  ? null
+                  : () async {
+                      await viewModel.handleScanComplete(context, action);
+                    },
+              child: const Text('ไปหน้าขายสินค้า'),
             ),
           ],
         ),

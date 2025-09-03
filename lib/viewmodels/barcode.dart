@@ -20,43 +20,62 @@ class BarcodeViewModel extends ChangeNotifier {
   BarcodeResultModel? get result => _result;
   File? get selectedImage => _selectedImage;
 
+  List<String> _scannedBarcodes = []; // ✅ เก็บหลายบาร์โค้ด
+
+  List<String> get scannedBarcodes => _scannedBarcodes;
+
   /// ✅ เลือกรูปจาก Gallery และสแกน
-  Future<void> scanFromGallery() async {
+  Future<void> scanFromGallery(BuildContext context, ScanAction action) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile == null) return;
-
-    _selectedImage = File(pickedFile.path);
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      _result = await _service.scanBarcodeFromImage(_selectedImage!);
-    } catch (e) {
-      print("Error scanning image: $e");
-      _result = null;
-    } finally {
-      _isLoading = false;
+    if (pickedFile != null) {
+      final imageFile = File(pickedFile.path);
+      _selectedImage = imageFile;
       notifyListeners();
+
+      final result = await _service.scanBarcodeFromImage(imageFile);
+
+      if (result != null && result.value != null) {
+        _scannedBarcodes.add(result.value!);
+        notifyListeners();
+
+        // ✅ นำทางทันทีถ้าเป็น addProduct
+        if (action == ScanAction.addProduct) {
+          String lastBarcode = _scannedBarcodes.last;
+          _scannedBarcodes.clear(); // ล้างเพื่อไม่ให้ค้าง
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddProductView(barcode: lastBarcode),
+            ),
+          );
+        }
+      }
     }
   }
 
   /// ✅ จัดการหลังสแกนเสร็จ
   Future<void> handleScanComplete(
       BuildContext context, ScanAction action) async {
-    if (_result == null || _result!.value == null) return;
-
-    String barcode = _result!.value!;
+    if (_scannedBarcodes.isEmpty) return;
 
     switch (action) {
       case ScanAction.addProduct:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => AddProductView(barcode: barcode), // ส่ง barcode ไป
-          ),
-        );
+        if (_scannedBarcodes.isNotEmpty) {
+          // ✅ เอาเฉพาะตัวล่าสุด (ไม่ต้องใช้ list ทั้งหมด)
+          String lastBarcode = _scannedBarcodes.last;
+
+          // ✅ เคลียร์ list เพื่อไม่ให้ค้าง
+          _scannedBarcodes.clear();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddProductView(barcode: lastBarcode),
+            ),
+          );
+        }
         break;
 
       case ScanAction.sellProduct:
@@ -65,15 +84,18 @@ class BarcodeViewModel extends ChangeNotifier {
 
         try {
           List<ProductModel> allProducts = await _dbHelper.getAllProducts();
-          List<ProductModel> matchedProducts =
-              allProducts.where((p) => p.barcode == barcode).toList();
+
+          // ✅ หา product ที่ barcode อยู่ใน _scannedBarcodes
+          List<ProductModel> matchedProducts = allProducts
+              .where((p) => _scannedBarcodes.contains(p.barcode))
+              .toList();
 
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) => SellProductView(
                 products: matchedProducts,
-                scannedBarcode: barcode,
+                scannedBarcodes: _scannedBarcodes, // ✅ ส่ง list ไป
               ),
             ),
           );
