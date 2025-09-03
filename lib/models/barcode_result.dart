@@ -1,7 +1,7 @@
-class BarcodeResult {
+class BarcodeResultModel {
   final String? value;
 
-  BarcodeResult({this.value});
+  BarcodeResultModel({this.value});
 }
 
 class BarcodeModel {

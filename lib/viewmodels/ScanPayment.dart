@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:poject_qr/db/db_helper.dart';
 import 'package:poject_qr/models/ProductModel.dart';
-import '../views/PaymentReceipt.dart';
+import '../views/keep/PaymentReceipt.dart';
 
 class ScanPaymentViewModel extends ChangeNotifier {
   bool isLoading = false;

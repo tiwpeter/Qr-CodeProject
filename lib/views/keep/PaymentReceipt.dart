@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/ProductModel.dart';
+import '../../models/ProductModel.dart';
 
 class PaymentReceiptView extends StatelessWidget {
   final List<ProductModel> products;

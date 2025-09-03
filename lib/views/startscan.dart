@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/views/ScanPage.dart';
-import './enums/scan_action.dart';
+import 'enums/scan_action.dart';
 
 class StartScanPage extends StatelessWidget {
   const StartScanPage({super.key});

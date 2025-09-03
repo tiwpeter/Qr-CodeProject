@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/db/db_helper.dart';
-import 'package:poject_qr/viewmodels/ScanBarcode.dart';
-import 'package:poject_qr/viewmodels/ScanPayment.dart';
-import 'package:poject_qr/viewmodels/barcode_view_model.dart';
-import 'package:poject_qr/views/ScanPage.dart';
+import 'package:poject_qr/viewmodels/barcode.dart';
 import 'package:poject_qr/views/startscan.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +14,6 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BarcodeViewModel()),
-        ChangeNotifierProvider(create: (_) => ScanBarcodeViewModel()),
-        ChangeNotifierProvider(create: (_) => ScanPaymentViewModel()),
       ],
       child: const MyApp(),
     ),

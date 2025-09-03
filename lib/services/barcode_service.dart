@@ -5,13 +5,13 @@ import '../models/barcode_result.dart';
 class BarcodeService {
   final _barcodeScanner = GoogleMlKit.vision.barcodeScanner();
 
-  Future<BarcodeResult?> scanBarcodeFromImage(File imageFile) async {
+  Future<BarcodeResultModel?> scanBarcodeFromImage(File imageFile) async {
     try {
       final inputImage = InputImage.fromFile(imageFile);
       final barcodes = await _barcodeScanner.processImage(inputImage);
 
       if (barcodes.isNotEmpty) {
-        return BarcodeResult(value: barcodes.first.displayValue);
+        return BarcodeResultModel(value: barcodes.first.displayValue);
       }
       return null;
     } catch (e) {

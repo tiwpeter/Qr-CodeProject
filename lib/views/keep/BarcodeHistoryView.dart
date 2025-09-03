@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/models/barcode_result.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/barcode_view_model.dart';
+import '../../viewmodels/barcode_view_model.dart';
 
 class BarcodeHistoryView extends StatelessWidget {
   const BarcodeHistoryView({super.key});

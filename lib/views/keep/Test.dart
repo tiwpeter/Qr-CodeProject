@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:poject_qr/models/ProductModel.dart';
 import 'package:poject_qr/viewmodels/barcode_view_model.dart';
 import 'package:provider/provider.dart';
-import '../db/db_helper.dart';
+import '../../db/db_helper.dart';
 
 class AddProductView extends StatefulWidget {
   final String barcode;
