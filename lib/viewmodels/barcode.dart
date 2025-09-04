@@ -55,6 +55,14 @@ class BarcodeViewModel extends ChangeNotifier {
     }
   }
 
+  /// สแกนจาก Camera
+  void addScannedBarcode(String code) {
+    if (!_scannedBarcodes.contains(code)) {
+      _scannedBarcodes.add(code);
+      notifyListeners();
+    }
+  }
+
   /// ✅ จัดการหลังสแกนเสร็จ
   Future<void> handleScanComplete(
       BuildContext context, ScanAction action) async {

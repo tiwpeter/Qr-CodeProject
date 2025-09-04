@@ -1,0 +1,4 @@
+enum ScanDialogType {
+  productFound,
+  productNotFound,
+}

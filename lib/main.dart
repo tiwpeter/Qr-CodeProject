@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/db/db_helper.dart';
 import 'package:poject_qr/viewmodels/barcode.dart';
+import 'package:poject_qr/views/ScanPage%20copy.dart';
+import 'package:poject_qr/views/scan_product_page.dart';
 import 'package:poject_qr/views/startscan.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +48,7 @@ class _MainTabPageState extends State<MainTabPage> {
   final List<Widget> _pages = [
     StartScanPage(),
     SearchPage(),
-    ProfilePage(),
+    ScanProductPage(),
   ];
 
   @override
