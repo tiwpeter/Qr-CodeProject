@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:poject_qr/models/ProductModel.dart';
-import 'package:poject_qr/viewmodels/scan_viewmodel.dart';
-import 'package:poject_qr/views/ScanPage%20copy.dart';
+import 'package:poject_qr/views/SlideInProduct.dart';
+import 'package:poject_qr/views/enums/scan_action.dart';
 import 'package:provider/provider.dart';
+import '../models/ProductModel.dart';
+import '../viewmodels/scan_viewmodel.dart';
+import '../viewmodels/barcode.dart';
 
 class ScanProductPage extends StatelessWidget {
-  const ScanProductPage({super.key});
+  const ScanProductPage({super.key, required this.action});
+
+  final ScanAction action;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ScanViewModel(),
-      child: const ScanProductView(),
+      child: ScanProductView(action: action),
     );
   }
 }
 
 class ScanProductView extends StatelessWidget {
-  const ScanProductView({super.key});
+  const ScanProductView({super.key, required this.action});
+
+  final ScanAction action;
 
   void _showProductPopup(BuildContext context, ProductModel product) {
     final overlay = Overlay.of(context);
@@ -26,12 +32,13 @@ class ScanProductView extends StatelessWidget {
         top: 50,
         left: 16,
         right: 16,
-        child: SlideInProduct(product: product.toMap()),
+        child: SlideInProduct(product: product),
       ),
     );
 
     overlay.insert(entry);
 
+    // ปิด popup อัตโนมัติหลัง 2 วินาที
     Future.delayed(const Duration(seconds: 2), () {
       entry.remove();
     });
@@ -40,47 +47,48 @@ class ScanProductView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<ScanViewModel>(context);
+    final barcodeVM = Provider.of<BarcodeViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("สแกนสินค้า"),
-        centerTitle: true,
+        title: const Text('Scan Page'),
+        backgroundColor: Colors.deepPurple,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              // ไปหน้าตะกร้า
-            },
-          ),
+          if (action == ScanAction.sellProduct)
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              tooltip: 'ไปหน้าขายสินค้า',
+              onPressed: barcodeVM.scannedBarcodes.isEmpty
+                  ? null
+                  : () async {
+                      await barcodeVM.handleScanComplete(context, action);
+                    },
+            ),
         ],
       ),
-      body: GestureDetector(
-        onTap: () {
-          vm.scanNextProduct();
-          if (vm.currentProduct != null) {
-            _showProductPopup(context, vm.currentProduct!);
-          }
-        },
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            height: 200,
-            child: const Center(
-              child: Text(
-                "📷 แตะเพื่อจำลองการสแกน",
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
+      body: Container(
+        color: Colors.black12,
+        child: GestureDetector(
+          onTap: () {
+            vm.scanNextProduct();
+            if (vm.currentProduct != null) {
+              _showProductPopup(context, vm.currentProduct!);
+            }
+          },
+          child: Center(
+            child: Icon(
+              Icons.qr_code_scanner,
+              size: 120,
+              color: Colors.grey[700],
             ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.flash_on),
+        onPressed: () async {
+          await barcodeVM.scanFromGallery(context, action);
+        },
+        child: const Icon(Icons.photo_library),
       ),
     );
   }

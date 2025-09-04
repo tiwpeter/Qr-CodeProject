@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/views/ScanPage.dart';
+import 'package:poject_qr/views/scan_product_page.dart';
 import 'enums/scan_action.dart';
 
 class StartScanPage extends StatelessWidget {
@@ -97,7 +98,7 @@ class StartScanPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const ScanPage(
+                                builder: (_) => const ScanProductPage(
                                     action: ScanAction.addProduct),
                               ),
                             );
@@ -110,7 +111,7 @@ class StartScanPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const ScanPage(
+                                builder: (_) => const ScanProductPage(
                                     action: ScanAction.sellProduct),
                               ),
                             );
