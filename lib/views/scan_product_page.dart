@@ -39,7 +39,7 @@ class ScanProductView extends StatelessWidget {
     overlay.insert(entry);
 
     // ปิด popup อัตโนมัติหลัง 2 วินาที
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 8), () {
       entry.remove();
     });
   }
