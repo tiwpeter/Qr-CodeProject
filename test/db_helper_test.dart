@@ -1,39 +1,57 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:poject_qr/db/db_helper.dart';
-import 'dart:io';
 import 'package:path/path.dart';
+import 'dart:io';
+
+import 'package:poject_qr/models/ProductModel.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() {
-  sqfliteFfiInit();
+  sqfliteFfiInit(); // สำหรับ FFI (Windows/Linux/Mac)
   databaseFactory = databaseFactoryFfi;
 
-  test('Add imagePath column in test', () async {
-    final dbPath = await databaseFactory.getDatabasesPath();
-    final path = join(dbPath, 'barcode.db');
+  late String dbPath;
+  late Database db;
 
-    // ลบ DB เดิม
-    if (await File(path).exists()) {
-      await deleteDatabase(path);
+  setUpAll(() async {
+    dbPath = join(await databaseFactory.getDatabasesPath(), 'barcode.db');
+
+    // เปิด database
+    db = await databaseFactory.openDatabase(dbPath);
+
+    // สร้าง table ถ้ายังไม่มี
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS product(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        barcode TEXT NOT NULL,
+        name TEXT NOT NULL,
+        price REAL NOT NULL,
+        imagePath TEXT
+      )
+    ''');
+  });
+
+  tearDownAll(() async {
+    await db.close();
+  });
+
+  test('Fetch all products dynamically', () async {
+    final List<Map<String, dynamic>> maps = await db.query('product');
+
+    if (maps.isEmpty) {
+      print('No products found in database.');
+    } else {
+      final List<ProductModel> products = List.generate(maps.length, (i) {
+        return ProductModel.fromMap(maps[i]);
+      });
+
+      // แสดงผลข้อมูล
+      for (var p in products) {
+        print(
+            'ID: ${p.id}, Barcode: ${p.barcode}, Name: ${p.name}, Price: ${p.price}, Image: ${p.imagePath}');
+      }
+
+      expect(products.isNotEmpty, true); // ตรวจสอบว่ามีข้อมูลจริง
     }
-
-    final dbHelper = DBHelper();
-    final db = await dbHelper.database;
-
-    // ตรวจสอบ column ก่อน
-    var hasImagePath = await dbHelper.hasColumn('product', 'imagePath');
-    print('Before ALTER: $hasImagePath'); // จะเป็น false
-
-    // เพิ่ม column ด้วย ALTER TABLE ถ้ายังไม่มี
-    if (!hasImagePath) {
-      await db.execute('ALTER TABLE product ADD COLUMN imagePath TEXT');
-      print('imagePath column added via test ALTER TABLE.');
-    }
-
-    // ตรวจสอบ column อีกครั้ง
-    hasImagePath = await dbHelper.hasColumn('product', 'imagePath');
-    print('After ALTER: $hasImagePath'); // จะเป็น true
-
-    expect(hasImagePath, true);
   });
 }

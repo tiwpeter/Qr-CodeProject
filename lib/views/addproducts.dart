@@ -90,7 +90,8 @@ class _AddProductViewState extends State<AddProductView> {
                   onPressed: !_isBarcodeScanned
                       ? null
                       : () async {
-                          if (_nameController.text.isEmpty ||
+                          if (_barcodeController.text.isEmpty ||
+                              _nameController.text.isEmpty ||
                               _priceController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -99,20 +100,40 @@ class _AddProductViewState extends State<AddProductView> {
                             return;
                           }
 
+                          double? price;
+                          try {
+                            price = double.parse(_priceController.text);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('ราคาต้องเป็นตัวเลข')),
+                            );
+                            return;
+                          }
+
                           final product = ProductModel(
                             barcode: _barcodeController.text,
                             name: _nameController.text,
-                            price: double.parse(_priceController.text),
+                            price: price,
                             imagePath: productImageVM.productImage?.path,
                           );
-                          await _dbHelper.insertProduct(product);
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('เพิ่มสินค้าเรียบร้อย')),
-                          );
-                          Navigator.pop(context);
+                          try {
+                            final id = await _dbHelper.insertProduct(product);
+                            print('Inserted product id: $id');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('เพิ่มสินค้าเรียบร้อย')),
+                            );
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print('Insert error: $e');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
+                            );
+                          }
                         },
+
                   child: const Text('บันทึกสินค้า'),
                 ),
               ],

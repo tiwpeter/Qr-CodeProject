@@ -86,7 +86,11 @@ class ScanProductView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await barcodeVM.scanFromGallery(context, action);
+          await barcodeVM.scanFromGallery(context, action,
+              onProductFound: (product) {
+            // เรียก popup หลังได้ ProductModel
+            _showProductPopup(context, product);
+          });
         },
         child: const Icon(Icons.photo_library),
       ),

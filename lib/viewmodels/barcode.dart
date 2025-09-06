@@ -25,7 +25,11 @@ class BarcodeViewModel extends ChangeNotifier {
   List<String> get scannedBarcodes => _scannedBarcodes;
 
   /// ✅ เลือกรูปจาก Gallery และสแกน
-  Future<void> scanFromGallery(BuildContext context, ScanAction action) async {
+  Future<void> scanFromGallery(
+    BuildContext context,
+    ScanAction action, {
+    Function(ProductModel)? onProductFound, // ✅ เพิ่ม callback
+  }) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -40,10 +44,26 @@ class BarcodeViewModel extends ChangeNotifier {
         _scannedBarcodes.add(result.value!);
         notifyListeners();
 
-        // ✅ นำทางทันทีถ้าเป็น addProduct
+        // หา ProductModel จาก DB
+        List<ProductModel> allProducts = await _dbHelper.getAllProducts();
+        ProductModel? product = allProducts.firstWhere(
+          (p) => p.barcode == result.value,
+          orElse: () => ProductModel(
+            barcode: result.value!,
+            name: 'Unknown',
+            price: 0,
+          ),
+        );
+
+        // เรียก popup ผ่าน callback
+        if (onProductFound != null) {
+          onProductFound(product);
+        }
+
+        // นำทางตาม action
         if (action == ScanAction.addProduct) {
           String lastBarcode = _scannedBarcodes.last;
-          _scannedBarcodes.clear(); // ล้างเพื่อไม่ให้ค้าง
+          _scannedBarcodes.clear();
           Navigator.push(
             context,
             MaterialPageRoute(

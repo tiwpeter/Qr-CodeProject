@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:poject_qr/models/ProductModel.dart';
 
@@ -15,9 +16,14 @@ class _SlideInProductState extends State<SlideInProduct>
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
 
+  late ImageProvider imageProvider;
+  bool _imageInitialized = false;
+
   @override
   void initState() {
     super.initState();
+
+    // สร้าง Animation
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -26,6 +32,29 @@ class _SlideInProductState extends State<SlideInProduct>
     _offsetAnimation = Tween<Offset>(
             begin: const Offset(0, -1), end: Offset.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_imageInitialized) {
+      // เตรียม ImageProvider
+      if (widget.product.imagePath != null &&
+          widget.product.imagePath!.isNotEmpty) {
+        imageProvider = ResizeImage(
+          FileImage(File(widget.product.imagePath!)),
+          width: 60,
+          height: 60,
+        );
+      } else {
+        imageProvider = const NetworkImage("https://via.placeholder.com/60");
+      }
+
+      // preload image
+      precacheImage(imageProvider, context);
+      _imageInitialized = true;
+    }
   }
 
   @override
@@ -49,21 +78,33 @@ class _SlideInProductState extends State<SlideInProduct>
           ),
           child: Row(
             children: [
-              Image.network(
-                widget.product.imagePath ??
-                    "https://via.placeholder.com/60", // fallback
+              // แสดงภาพ local หรือ fallback network
+              Image(
+                image: imageProvider,
                 height: 60,
                 width: 60,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                    "https://via.placeholder.com/60",
+                    height: 60,
+                    width: 60,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.product.name,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(
+                      widget.product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Text("ราคา: ${widget.product.price} บาท"),
                   ],
                 ),
