@@ -72,7 +72,9 @@ class ScanProductView extends StatelessWidget {
           onTap: () {
             vm.scanNextProduct();
             if (vm.currentProduct != null) {
-              _showProductPopup(context, vm.currentProduct!);
+              if (action != ScanAction.addProduct) {
+                _showProductPopup(context, vm.currentProduct!);
+              }
             }
           },
           child: Center(
@@ -88,8 +90,10 @@ class ScanProductView extends StatelessWidget {
         onPressed: () async {
           await barcodeVM.scanFromGallery(context, action,
               onProductFound: (product) {
-            // เรียก popup หลังได้ ProductModel
-            _showProductPopup(context, product);
+            // ✅ แสดง popup เฉพาะ action ที่ไม่ใช่ addProduct
+            if (action != ScanAction.addProduct) {
+              _showProductPopup(context, product);
+            }
           });
         },
         child: const Icon(Icons.photo_library),

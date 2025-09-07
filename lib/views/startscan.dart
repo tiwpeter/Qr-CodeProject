@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:poject_qr/views/ScanPage.dart';
 import 'package:poject_qr/views/scan_product_page.dart';
 import 'enums/scan_action.dart';
 
