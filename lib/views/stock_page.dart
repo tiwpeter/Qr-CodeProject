@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poject_qr/viewmodels/stock_viewmodel.dart';
+import 'package:poject_qr/views/addproducts.dart';
 import 'package:provider/provider.dart';
 
 class StockPage extends StatelessWidget {
@@ -145,6 +146,16 @@ class StockPage extends StatelessWidget {
                       ],
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    // 👇 เพิ่มตรงนี้
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProductFormView(product: product),
+                        ),
+                      );
+                    },
                   ),
                 );
               },

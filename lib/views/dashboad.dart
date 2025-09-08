@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'line_chart_card.dart'; // Import the LineChartCard you created
 
-class LineChartPage extends StatefulWidget {
-  const LineChartPage({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   @override
   _LineChartPageState createState() => _LineChartPageState();
 }
 
-class _LineChartPageState extends State<LineChartPage> {
+class _LineChartPageState extends State<Dashboard> {
   String _selectedPeriod = '1m'; // Default to 1 month
 
   @override
@@ -174,8 +174,3 @@ class _LineChartPageState extends State<LineChartPage> {
 }
 
 // To run the page, you can set it as the home widget in your main.dart
-void main() {
-  runApp(MaterialApp(
-    home: LineChartPage(),
-  ));
-}

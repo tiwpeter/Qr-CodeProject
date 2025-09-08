@@ -71,10 +71,8 @@ class ScanProductView extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             vm.scanNextProduct();
-            if (vm.currentProduct != null) {
-              if (action != ScanAction.addProduct) {
-                _showProductPopup(context, vm.currentProduct!);
-              }
+            if (vm.currentProduct != null && action != ScanAction.addProduct) {
+              _showProductPopup(context, vm.currentProduct!);
             }
           },
           child: Center(
@@ -88,13 +86,16 @@ class ScanProductView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await barcodeVM.scanFromGallery(context, action,
-              onProductFound: (product) {
-            // ✅ แสดง popup เฉพาะ action ที่ไม่ใช่ addProduct
-            if (action != ScanAction.addProduct) {
-              _showProductPopup(context, product);
-            }
-          });
+          await barcodeVM.scanFromGallery(
+            context,
+            action,
+            onProductFound: (product) {
+              // ✅ แสดง popup เฉพาะ action ที่ไม่ใช่ addProduct และ product ไม่เป็น null
+              if (action != ScanAction.addProduct && product != null) {
+                _showProductPopup(context, product);
+              }
+            },
+          );
         },
         child: const Icon(Icons.photo_library),
       ),

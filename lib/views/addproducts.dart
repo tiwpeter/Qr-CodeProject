@@ -1,43 +1,48 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:poject_qr/viewmodels/ProductImage.dart';
 import 'package:provider/provider.dart';
-import '../db/db_helper.dart';
-import '../models/ProductModel.dart';
 import 'package:image_picker/image_picker.dart';
+import '../models/ProductModel.dart';
+import '../viewmodels/ProductImage.dart';
+import '../viewmodels/product_viewmodel.dart';
 
-class AddProductView extends StatefulWidget {
-  final String? barcode;
-  const AddProductView({super.key, this.barcode});
+class ProductFormView extends StatefulWidget {
+  final ProductModel? product;
+  final String? scannedBarcode; // รับ barcode
+
+  const ProductFormView(
+      {super.key,
+      this.product,
+      this.scannedBarcode}); // ✅ เพิ่ม named parameter
 
   @override
-  State<AddProductView> createState() => _AddProductViewState();
+  State<ProductFormView> createState() => _ProductFormViewState();
 }
 
-class _AddProductViewState extends State<AddProductView> {
+class _ProductFormViewState extends State<ProductFormView> {
   final _barcodeController = TextEditingController();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _quantityController = TextEditingController();
-  final DBHelper _dbHelper = DBHelper();
   bool _isBarcodeScanned = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.barcode != null) {
-      _barcodeController.text = widget.barcode!;
+
+    // ถ้ามี product อยู่แล้ว ให้ใช้ข้อมูล product
+    if (widget.product != null) {
+      _barcodeController.text = widget.product!.barcode;
+      _nameController.text = widget.product!.name;
+      _priceController.text = widget.product!.price.toString();
+      _quantityController.text = widget.product!.quantity.toString();
       _isBarcodeScanned = true;
     }
-  }
-
-  @override
-  void dispose() {
-    _barcodeController.dispose();
-    _nameController.dispose();
-    _priceController.dispose();
-    _quantityController.dispose();
-    super.dispose();
+    // ถ้าเป็น scannedBarcode จากการสแกน
+    else if (widget.scannedBarcode != null) {
+      _barcodeController.text = widget.scannedBarcode!;
+      _isBarcodeScanned = true; // เปิดให้กรอกข้อมูล
+    }
   }
 
   void _showPickOptionsDialog(
@@ -69,19 +74,70 @@ class _AddProductViewState extends State<AddProductView> {
     );
   }
 
+  void _save(BuildContext context, ProductImage productImageVM) async {
+    if (_barcodeController.text.isEmpty ||
+        _nameController.text.isEmpty ||
+        _priceController.text.isEmpty ||
+        _quantityController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('กรุณากรอกข้อมูลให้ครบ')),
+      );
+      return;
+    }
+
+    double? price;
+    int? quantity;
+    try {
+      price = double.parse(_priceController.text);
+      quantity = int.parse(_quantityController.text);
+    } catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ราคาและจำนวนต้องเป็นตัวเลข')),
+      );
+      return;
+    }
+
+    final product = ProductModel(
+      id: widget.product?.id,
+      barcode: _barcodeController.text,
+      name: _nameController.text,
+      price: price,
+      quantity: quantity,
+      imagePath: productImageVM.productImage?.path ?? widget.product?.imagePath,
+    );
+
+    final viewModel = context.read<ProductFormViewModel>();
+    await viewModel.saveProduct(product, isEdit: widget.product != null);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(widget.product != null
+              ? 'แก้ไขสินค้าเรียบร้อย'
+              : 'เพิ่มสินค้าเรียบร้อย')),
+    );
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ProductImage>(
-      create: (_) => ProductImage(),
-      child: Consumer<ProductImage>(
-        builder: (context, productImageVM, _) => Scaffold(
-          appBar: AppBar(title: const Text('เพิ่มสินค้า')),
+    final isEditing = widget.product != null;
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) =>
+                ProductImage(initialPath: widget.product?.imagePath)),
+        ChangeNotifierProvider(create: (_) => ProductFormViewModel()),
+      ],
+      child: Consumer2<ProductImage, ProductFormViewModel>(
+        builder: (context, productImageVM, formVM, _) => Scaffold(
+          appBar: AppBar(
+            title: Text(isEditing ? 'แก้ไขสินค้า' : 'เพิ่มสินค้า'),
+          ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // -----------------------------
-                // เลือกรูปสินค้า ย้ายขึ้นบนสุด
                 GestureDetector(
                   onTap: () => _showPickOptionsDialog(context, productImageVM),
                   child: Container(
@@ -94,14 +150,14 @@ class _AddProductViewState extends State<AddProductView> {
                     child: productImageVM.productImage != null
                         ? Image.file(productImageVM.productImage!,
                             fit: BoxFit.cover)
-                        : const Icon(Icons.camera_alt,
-                            size: 50, color: Colors.grey),
+                        : (widget.product?.imagePath != null
+                            ? Image.file(File(widget.product!.imagePath!),
+                                fit: BoxFit.cover)
+                            : const Icon(Icons.camera_alt,
+                                size: 50, color: Colors.grey)),
                   ),
                 ),
                 const SizedBox(height: 20),
-                // -----------------------------
-
-                // Barcode
                 TextFormField(
                   controller: _barcodeController,
                   decoration: const InputDecoration(
@@ -111,8 +167,6 @@ class _AddProductViewState extends State<AddProductView> {
                   readOnly: true,
                 ),
                 const SizedBox(height: 16),
-
-                // ชื่อสินค้า
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
@@ -122,8 +176,6 @@ class _AddProductViewState extends State<AddProductView> {
                   enabled: _isBarcodeScanned,
                 ),
                 const SizedBox(height: 16),
-
-                // ราคา
                 TextFormField(
                   controller: _priceController,
                   keyboardType: TextInputType.number,
@@ -134,8 +186,6 @@ class _AddProductViewState extends State<AddProductView> {
                   enabled: _isBarcodeScanned,
                 ),
                 const SizedBox(height: 16),
-
-                // จำนวน
                 TextFormField(
                   controller: _quantityController,
                   keyboardType: TextInputType.number,
@@ -146,60 +196,15 @@ class _AddProductViewState extends State<AddProductView> {
                   enabled: _isBarcodeScanned,
                 ),
                 const SizedBox(height: 20),
-
-                // บันทึกสินค้า
-                ElevatedButton(
-                  onPressed: !_isBarcodeScanned
-                      ? null
-                      : () async {
-                          if (_barcodeController.text.isEmpty ||
-                              _nameController.text.isEmpty ||
-                              _priceController.text.isEmpty ||
-                              _quantityController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('กรุณากรอกข้อมูลให้ครบ')),
-                            );
-                            return;
-                          }
-
-                          double? price;
-                          int? quantity;
-                          try {
-                            price = double.parse(_priceController.text);
-                            quantity = int.parse(_quantityController.text);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('ราคาและจำนวนต้องเป็นตัวเลข')),
-                            );
-                            return;
-                          }
-
-                          final product = ProductModel(
-                            barcode: _barcodeController.text,
-                            name: _nameController.text,
-                            price: price,
-                            imagePath: productImageVM.productImage?.path,
-                          );
-
-                          try {
-                            final id = await _dbHelper.insertProduct(product);
-                            print('Inserted product id: $id');
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('เพิ่มสินค้าเรียบร้อย')),
-                            );
-                            Navigator.pop(context);
-                          } catch (e) {
-                            print('Insert error: $e');
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('เกิดข้อผิดพลาด: $e')),
-                            );
-                          }
-                        },
-                  child: const Text('บันทึกสินค้า'),
-                ),
+                formVM.isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: !_isBarcodeScanned
+                            ? null
+                            : () => _save(context, productImageVM),
+                        child:
+                            Text(isEditing ? 'อัพเดทสินค้า' : 'บันทึกสินค้า'),
+                      ),
               ],
             ),
           ),

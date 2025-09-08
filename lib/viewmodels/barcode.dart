@@ -28,7 +28,7 @@ class BarcodeViewModel extends ChangeNotifier {
   Future<void> scanFromGallery(
     BuildContext context,
     ScanAction action, {
-    Function(ProductModel)? onProductFound, // ✅ เพิ่ม callback
+    Function(ProductModel?)? onProductFound, // รับ nullable
   }) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -46,30 +46,58 @@ class BarcodeViewModel extends ChangeNotifier {
 
         // หา ProductModel จาก DB
         List<ProductModel> allProducts = await _dbHelper.getAllProducts();
-        ProductModel? product = allProducts.firstWhere(
-          (p) => p.barcode == result.value,
-          orElse: () => ProductModel(
-            barcode: result.value!,
-            name: 'Unknown',
-            price: 0,
-          ),
-        );
+        ProductModel? product;
+
+        // เช็คว่ามี barcode อยู่ใน list หรือไม่
+        bool found = allProducts.any((p) => p.barcode == result.value);
+        if (found) {
+          product = allProducts.firstWhere((p) => p.barcode == result.value);
+        } else {
+          product = null; // ไม่เจอ -> null
+        }
 
         // เรียก popup ผ่าน callback
         if (onProductFound != null) {
-          onProductFound(product);
+          onProductFound(product); // ส่ง null ได้
         }
 
         // นำทางตาม action
         if (action == ScanAction.addProduct) {
-          String lastBarcode = _scannedBarcodes.last;
-          _scannedBarcodes.clear();
+          String scannedCode = result.value!;
+          // _scannedBarcodes.clear();
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => AddProductView(barcode: lastBarcode),
+              builder: (_) => ProductFormView(
+                product: product, // ส่ง ProductModel ถ้ามี
+                scannedBarcode: scannedCode, // ส่ง barcode ที่สแกน
+              ),
             ),
           );
+        } else if (action == ScanAction.sellProduct) {
+          _isLoading = true;
+          notifyListeners();
+
+          try {
+            List<ProductModel> matchedProducts = allProducts
+                .where((p) => _scannedBarcodes.contains(p.barcode))
+                .toList();
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => SellProductView(
+                  products: matchedProducts,
+                  scannedBarcodes: _scannedBarcodes,
+                ),
+              ),
+            );
+          } catch (e) {
+            debugPrint('Error fetching products: $e');
+          } finally {
+            _isLoading = false;
+            notifyListeners();
+          }
         }
       }
     }
@@ -100,7 +128,7 @@ class BarcodeViewModel extends ChangeNotifier {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => AddProductView(barcode: lastBarcode),
+              builder: (_) => ProductFormView(),
             ),
           );
         }

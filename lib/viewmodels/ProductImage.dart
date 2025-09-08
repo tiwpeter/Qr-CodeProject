@@ -7,6 +7,13 @@ class ProductImage extends ChangeNotifier {
   final BarcodeService _service = BarcodeService();
   File? _productImage; // รูปสินค้า
 
+  // เพิ่ม constructor รองรับ initialPath
+  ProductImage({String? initialPath}) {
+    if (initialPath != null) {
+      _productImage = File(initialPath);
+    }
+  }
+
   File? get productImage => _productImage;
 
   /// เลือกรูปสินค้า พร้อมระบุ source (camera/gallery)

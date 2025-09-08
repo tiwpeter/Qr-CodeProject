@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:poject_qr/db/db_helper.dart';
 import 'package:poject_qr/viewmodels/barcode.dart';
 import 'package:poject_qr/viewmodels/stock_viewmodel.dart';
+import 'package:poject_qr/views/dashboad.dart';
 import 'package:poject_qr/views/getAllProducts.dart';
 import 'package:poject_qr/views/scan_product_page.dart';
 import 'package:poject_qr/views/startscan.dart';
@@ -52,7 +53,7 @@ class _MainTabPageState extends State<MainTabPage> {
   final List<Widget> _pages = [
     StartScanPage(),
     StockPage(),
-    SearchPage(),
+    Dashboard(),
     // ScanProductPage(),
   ];
 
@@ -70,18 +71,21 @@ class _MainTabPageState extends State<MainTabPage> {
             _currentIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon:
+                Image.asset('assets/images/qrcode.png', width: 16, height: 16),
+            label: 'Scan',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon:
+                Image.asset('assets/images/stock_1.png', width: 16, height: 16),
             label: 'Stock',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+            icon:
+                Image.asset('assets/images/revenue.png', width: 16, height: 16),
+            label: 'Dashboad',
           ),
         ],
       ),
